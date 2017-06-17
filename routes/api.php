@@ -17,7 +17,17 @@ use Illuminate\Http\Request;
 Route::get('/users',                    'UsersController@getUsers');
 Route::get('/users/{user}',             'UsersController@getUser');
 Route::post('/users',                   'UsersController@register');
+
 Route::post('/login',                   'UsersController@authenticate');
 
 Route::get('/users/{user}/posts',       'UserPostsController@getPosts');
-Route::post('/users/{user}/posts',      'UserPostsController@addPost');
+
+// Must be connected
+Route::group(['middleware' => 'validjwt'], function () {
+
+    // Must be a specific user
+    Route::group(['middleware' => 'correctuser'], function () {
+        Route::post('/users/{user}/posts',      'UserPostsController@addPost');
+    });
+});
+

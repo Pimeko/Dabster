@@ -61,6 +61,5 @@ class UsersController extends Controller
         {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-
     }
 }
