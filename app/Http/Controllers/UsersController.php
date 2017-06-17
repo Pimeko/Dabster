@@ -62,4 +62,24 @@ class UsersController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
     }
+
+    // Check user's credentials and generates a token
+    public function authenticate_test($pseudo, $password)
+    {
+        $user = User::where('pseudo', $pseudo)->first();
+
+        try
+        {
+            if (empty($user) || !Hash::check($password, $user->password))
+            {
+                return response()->json(['error' => 'invalid_credentials'], 401);
+            }
+            $token = JWTAuth::fromUser($user);
+            return response()->json(compact('token'));
+        }
+        catch (JWTException $e)
+        {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+    }
 }

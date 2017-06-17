@@ -10,7 +10,18 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Http\Request;
+use App\Http\Controllers\UsersController;
 
 Route::get('/', function () {
-    return view('welcome');
+    $usersController = new UsersController();
+
+    return view('example', ['users' => $usersController->getUsers()]);
 });
+
+Route::get('/login', ['as' => 'login', 'uses' => function () {
+    /*
+    $usersController = new UsersController();
+    $token = $usersController->authenticate_test($request->pseudo, $request->password);*/
+    //return view('welcome');
+}]);
