@@ -12,4 +12,14 @@ class UserPost extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(UserComment::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(UserLike::class);
+    }
 }
