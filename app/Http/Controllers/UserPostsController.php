@@ -23,12 +23,21 @@ class UserPostsController extends Controller
         $newUserPost = new UserPost;
 
         $newUserPost->user_id = $user->id;
-        $newUserPost->img_path = $request->img_path;
+
+        // Save image on server
+        $imageName = $request->file('image')->getClientOriginalName();
+        $path = '/img/' . $user->id . '/';
+        $request->file('image')->move(
+            base_path() . $path, $imageName
+        );
+        $fullPath = $path . $imageName;
+
+        $newUserPost->img_path = $fullPath;
         $newUserPost->post_date = Carbon::now();
 
         if ($request->has('description'))
             $newUserPost->description = $request->description;
-        
+
         $newUserPost->save();
     }
 }
