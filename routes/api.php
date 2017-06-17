@@ -2,17 +2,7 @@
 
 use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
+// NOTE : A PUT Request is a POST Request with _method = PUT in the body
 
 Route::get('/users',                    'UsersController@getUsers');
 Route::get('/users/{user}',             'UsersController@getUser');
@@ -28,6 +18,9 @@ Route::group(['middleware' => 'validjwt'], function () {
     Route::group(['middleware' => 'correctuser'], function () {
         Route::post('/users/{user}/posts',                  'UserPostsController@addPost');
         Route::post('/posts/{post}/comments',               'UserCommentsController@addComment');
+        Route::post('/posts/{post}/likes',                  'UserLikesController@changeLike');
+        Route::put('/posts/{post}/likes',                   'UserLikesController@changeLike');
+        Route::delete('/posts/{post}/likes',                'UserLikesController@changeLike');
     });
 });
 
