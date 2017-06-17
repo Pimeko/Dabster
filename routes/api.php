@@ -24,10 +24,10 @@ Route::get('/users/{user}/posts',       'UserPostsController@getPosts');
 
 // Must be connected
 Route::group(['middleware' => 'validjwt'], function () {
-
     // Must be a specific user
     Route::group(['middleware' => 'correctuser'], function () {
-        Route::post('/users/{user}/posts',      'UserPostsController@addPost');
+        Route::post('/users/{user}/posts',                  'UserPostsController@addPost');
+        Route::post('/posts/{post}/comments',               'UserCommentsController@addComment');
     });
 });
 
