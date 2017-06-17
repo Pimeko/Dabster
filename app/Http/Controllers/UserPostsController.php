@@ -20,15 +20,15 @@ class UserPostsController extends Controller
 
     public function addPost(User $user, Request $request)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-        return $user;
-        /*
         $newUserPost = new UserPost;
 
         $newUserPost->user_id = $user->id;
         $newUserPost->img_path = $request->img_path;
         $newUserPost->post_date = Carbon::now();
 
-        $newUserPost->save();*/
+        if ($request->has('description'))
+            $newUserPost->description = $request->description;
+        
+        $newUserPost->save();
     }
 }
