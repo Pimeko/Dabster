@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('example', 'PagesController@example');
+
+Route::get('login', 'PagesController@login');
+Route::post('login', 'PagesController@auth');
