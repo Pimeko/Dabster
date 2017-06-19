@@ -12,8 +12,43 @@
         <link href="css/bulma.css" rel="stylesheet">
     </head>
     <body>
-        <div class="container">
-            @yield('content')
+
+        <div class="hero-head">
+            <header class="nav">
+                <div class="container">
+                    <div class="nav-left">
+                        <a class="nav-item" href="/">
+                            <img src="img/420px-logo.png" alt="Logo">
+                        </a>
+                    </div>
+                    <div class="nav-right">
+                        @if (Session::has('token'))
+                            <a class="nav-item" href="/">
+                                Accueil
+                            </a>
+                            <a class="nav-item" href="logout">
+                                Se déconnecter
+                            </a>
+                        @else
+                            <a class="nav-item" href="/">
+                                Accueil
+                            </a>
+                            <a class="nav-item" href="login">
+                                Se connecter
+                            </a>
+                            <a class="nav-item" href="register">
+                                S'inscrire
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class="hero body">
+            <div class="container">
+                @yield('content')
+            </div>
         </div>
 
         @yield('footer')

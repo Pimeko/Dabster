@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use JWTAuth;
 use JWTFactory;
+use Session;
 use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
 
@@ -52,14 +53,27 @@ class UsersController extends Controller
         {
             if (empty($user) || !Hash::check($request->password, $user->password))
             {
-                return response()->json(['error' => 'invalid_credentials'], 401);
+                //return response()->json(['error' => 'invalid_credentials'], 401);
+                return view('login');
             }
+
             $token = JWTAuth::fromUser($user);
-            return response()->json(compact('token'));
+            Session::put('token', $token);
+            $users = User::all();
+            return view('example', compact('users'));
+            //return response()->json(compact('token'));
         }
         catch (JWTException $e)
         {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            //return response()->json(['error' => 'could_not_create_token'], 500);
+            return view('login');
+
         }
+    }
+
+    public function logout() {
+        Session::remove('token');
+        $users = User::all();
+        return view('example', compact('users'));
     }
 }

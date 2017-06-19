@@ -22,7 +22,9 @@ Route::get('/', function () {
 Route::get('example', 'PagesController@example');
 
 Route::get('login', 'PagesController@login');
-Route::post('login', 'PagesController@auth');
+Route::post('login', 'UsersController@authenticate');
+
+Route::get('logout', 'UsersController@logout');
 
 Route::get('register', function () {
     return view('register');
