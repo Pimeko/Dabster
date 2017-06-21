@@ -19,7 +19,9 @@
         <div class="column is-4 name">
           <p>
             <span class="title is-bold">{{ $user->pseudo }}</span>
-            <span class="button is-primary is-outlined follow">Follow</span>
+            @if ($user->id !== Session::get('user_id'))
+              <span class="button is-primary is-outlined follow">Follow</span>
+            @endif
           </p>
           <p class="tagline">The users profile bio would go here, of course. It could be two lines</p>
         </div>

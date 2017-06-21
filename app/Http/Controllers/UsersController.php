@@ -37,11 +37,15 @@ class UsersController extends Controller
         try
         {
             $token = JWTAuth::fromUser($newUser);
-            return response()->json(compact('token'));
+            Session::put('user_id', $newUser->id);
+            Session::put('token', $token);
+            return PagesController::home();
+            //return response()->json(compact('token'));
         }
         catch (JWTException $e)
         {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            return view('register'); 
+            //response()->json(['error' => 'could_not_create_token'], 500);
         }
     }
 
@@ -61,8 +65,7 @@ class UsersController extends Controller
             $token = JWTAuth::fromUser($user);
             Session::put('user_id', $user->id);
             Session::put('token', $token);
-            $users = User::all();
-            return view('example', compact('users'));
+            return PagesController::home();
             //return response()->json(compact('token'));
         }
         catch (JWTException $e)
@@ -76,13 +79,14 @@ class UsersController extends Controller
     public function logout() {
         Session::remove('token');
         Session::remove('user_id');
-        $users = User::all();
-        return view('example', compact('users'));
+        return PagesController::home();
     }
 
-    public function profile() {
-        $user = User::where('id', Session::get('user_id'))->first();
-        $likes = UserLike::where('user_id', Session::get('user_id'))->get()->count();
+    public function profile(Request $request) {
+        if ($request->id)
+        $id = $request->id ? $request->id : Session::get('user_id'); 
+        $user = User::where('id', $id)->first();
+        $likes = UserLike::where('user_id', $id)->get()->count();
         return view('profile', compact('user', 'likes'));
     }
 }

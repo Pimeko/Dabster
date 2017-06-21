@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Register')
+@section('title', 'S\'inscrire')
 
 @section('content')
 <div class="hero is-light">
@@ -29,7 +29,7 @@
             </div>
             <div class="field">
                 <p class="control">
-                    {!! Form::submit('Login', ['class' => 'button is-primary']) !!}
+                    {!! Form::submit('S\'inscrire', ['class' => 'button is-primary']) !!}
                 </p>
             </div>
         {!! Form::close() !!}

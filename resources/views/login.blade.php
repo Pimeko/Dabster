@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login')
+@section('title', 'Connexion')
 
 @section('content')
 <div class="hero is-light">

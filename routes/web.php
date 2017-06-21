@@ -13,15 +13,11 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\UsersController;
 
-Route::get('/', function () {
-    $usersController = new UsersController();
+Route::get('/', 'PagesController@home');
 
-    return view('example', ['users' => $usersController->getUsers()]);
+Route::get('login', function () {
+    return view('login');
 });
-
-Route::get('example', 'PagesController@example');
-
-Route::get('login', 'PagesController@login');
 Route::post('login', 'UsersController@authenticate');
 
 Route::get('logout', 'UsersController@logout');
