@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\UserLike;
 use JWTAuth;
 use JWTFactory;
 use Session;
@@ -58,6 +59,7 @@ class UsersController extends Controller
             }
 
             $token = JWTAuth::fromUser($user);
+            Session::put('user_id', $user->id);
             Session::put('token', $token);
             $users = User::all();
             return view('example', compact('users'));
@@ -73,7 +75,14 @@ class UsersController extends Controller
 
     public function logout() {
         Session::remove('token');
+        Session::remove('user_id');
         $users = User::all();
         return view('example', compact('users'));
+    }
+
+    public function profile() {
+        $user = User::where('id', Session::get('user_id'))->first();
+        $likes = UserLike::where('user_id', Session::get('user_id'))->get()->count();
+        return view('profile', compact('user', 'likes'));
     }
 }

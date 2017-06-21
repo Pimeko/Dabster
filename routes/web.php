@@ -26,6 +26,8 @@ Route::post('login', 'UsersController@authenticate');
 
 Route::get('logout', 'UsersController@logout');
 
+Route::get('profile', 'UsersController@profile');
+
 Route::get('register', function () {
     return view('register');
 });
