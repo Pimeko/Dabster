@@ -83,7 +83,6 @@ class UsersController extends Controller
     }
 
     public function profile(Request $request) {
-        if ($request->id)
         $id = $request->id ? $request->id : Session::get('user_id'); 
         $user = User::where('id', $id)->first();
         $likes = UserLike::where('user_id', $id)->get()->count();
