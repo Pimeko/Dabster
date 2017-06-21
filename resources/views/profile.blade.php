@@ -3,7 +3,7 @@
 @section('title', 'Profil')
 
 @section('includes')
-        <link href="css/profile.css" rel="stylesheet">
+        <link href="/css/profile.css" rel="stylesheet">
 @endsection
 
 @section('content')

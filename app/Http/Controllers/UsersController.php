@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 use App\User;
 use App\UserLike;
 use JWTAuth;
@@ -82,10 +84,12 @@ class UsersController extends Controller
         return PagesController::home();
     }
 
-    public function profile(Request $request) {
-        $id = $request->id ? $request->id : Session::get('user_id'); 
-        $user = User::where('id', $id)->first();
-        $likes = UserLike::where('user_id', $id)->get()->count();
+    public function profile(Request $request, $user) {
+        $user = User::where('id', $user)->first();
+        if (!$user)
+            return view('error');
+
+        $likes = 3/* UserLike::where('user_id', $id)->get()->count()*/;
         return view('profile', compact('user', 'likes'));
     }
 }

@@ -29,5 +29,3 @@ Route::group(['middleware' => 'validjwt'], function () {
     });
 });
 
-
-

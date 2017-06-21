@@ -10,7 +10,7 @@
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-        <link href="css/bulma.css" rel="stylesheet">
+        <link href="/css/bulma.css" rel="stylesheet">
         @yield('includes')
     </head>
     <body>
@@ -26,20 +26,20 @@
                         <a class="nav-item" href="/">
                             Accueil
                         </a>
-                        <a class="nav-item" href="profile">
+                        <a class="nav-item" href="/profile">
                             Profil
                         </a>
-                        <a class="nav-item" href="logout">
+                        <a class="nav-item" href="/logout">
                             Se déconnecter
                         </a>
                     @else
                         <a class="nav-item" href="/">
                             Accueil
                         </a>
-                        <a class="nav-item" href="login">
+                        <a class="nav-item" href="/login">
                             Se connecter
                         </a>
-                        <a class="nav-item" href="register">
+                        <a class="nav-item" href="/register">
                             S'inscrire
                         </a>
                     @endif
