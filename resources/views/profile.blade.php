@@ -25,7 +25,13 @@
               <span class="button is-primary is-outlined follow">Follow</span>
             @endif
           </p>
-          <p class="tagline">The users profile bio would go here, of course. It could be two lines</p>
+          <p class="tagline">
+            @if ($user->description == "")
+              Editez votre profil pour ajouter une description.
+            @else
+              {{ $user->description  }}
+            @endif
+          </p>
         </div>
         <div class="column is-2 followers has-text-centered">
           <p class="stat-val">{{ $followersCount }}</p>

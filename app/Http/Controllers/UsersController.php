@@ -28,15 +28,7 @@ class UsersController extends Controller
             ->with('likes')
             ->first();
 
-        if (!$user)
-            return view('error');
-
-
-        $usersFollowingsCount = $user->usersFollowings->count();
-        $usersFollowersCount = $user->usersFollowers->count();
-        $nbLikes = $user->likes->count();
-
-        return view('profile', compact('user', 'nbLikes'));
+        return $user;
     }
 
     // Creates a user and generates a token
