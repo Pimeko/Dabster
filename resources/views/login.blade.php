@@ -5,8 +5,14 @@
 @section('content')
 <div class="hero is-light">
     <div class="container has-text-centered">
-        <h1 class="title">Login</h1>
 
+        @if($errors)
+            @foreach ($errors as $error)
+                <div style="color: #D9534F">{{ $error }}</div>
+            @endforeach
+        @endif
+
+        <h1 class="title">Connexion</h1>
         
         {!! Form::open(['style' => 'width:50%;margin:0 auto;']) !!}
             <div class="field">

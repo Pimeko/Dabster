@@ -26,7 +26,7 @@
                         <a class="nav-item" href="/">
                             Accueil
                         </a>
-                        <a class="nav-item" href="/profile">
+                        <a class="nav-item" href="{{ URL::to('/users/' . Session::get('user_id')) }}">
                             Profil
                         </a>
                         <a class="nav-item" href="/logout">

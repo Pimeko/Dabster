@@ -3,11 +3,9 @@
 @section('title', 'Error')
 
 @section('content')
-<div class="flex-center position-ref full-height">
-    <div class="content">
-        <div class="title m-b-md">
-            Error
-        </div>
+<div class="hero is-light">
+    <div class="container has-text-centered">
+        <h1 class="title">Error</h1>
     </div>
 </div>
 @endsection

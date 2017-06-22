@@ -55,33 +55,30 @@ class UsersController extends Controller
     public function authenticate(Request $request)
     {
         $user = User::where('pseudo', $request->pseudo)->first();
-
+        $errors = [];
         try
         {
             if (empty($user) || !Hash::check($request->password, $user->password))
             {
-                //return response()->json(['error' => 'invalid_credentials'], 401);
-                return view('login');
+                array_push($errors, "Mauvais pseudo/mot de passe, veuillez réessayer");
+                return view('login', compact("errors"));
             }
-
             $token = JWTAuth::fromUser($user);
             Session::put('user_id', $user->id);
             Session::put('token', $token);
-            return PagesController::home();
-            //return response()->json(compact('token'));
+            return redirect('/');
         }
         catch (JWTException $e)
-        {
-            //return response()->json(['error' => 'could_not_create_token'], 500);
-            return view('login');
-
+        {   
+            array_push($errors, "Erreur de token");
+            return view('login', compact("errors"));
         }
     }
 
     public function logout() {
         Session::remove('token');
         Session::remove('user_id');
-        return PagesController::home();
+        return redirect('/');
     }
 
     public function profile(Request $request, $user) {
