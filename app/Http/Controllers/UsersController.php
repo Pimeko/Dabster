@@ -20,9 +20,23 @@ class UsersController extends Controller
         return User::all();
     }
 
-    public function getUser(User $user)
+    public function getUser($userId)
     {
-        return $user;
+        $user = User::where('id', $userId)
+            ->with('usersFollowings')
+            ->with('usersFollowers')
+            ->with('likes')
+            ->first();
+
+        if (!$user)
+            return view('error');
+
+
+        $usersFollowingsCount = $user->usersFollowings->count();
+        $usersFollowersCount = $user->usersFollowers->count();
+        $nbLikes = $user->likes->count();
+
+        return view('profile', compact('user', 'nbLikes'));
     }
 
     // Creates a user and generates a token
@@ -81,12 +95,34 @@ class UsersController extends Controller
         return redirect('/');
     }
 
-    public function profile(Request $request, $user) {
-        $user = User::where('id', $user)->first();
-        if (!$user)
+    public function profile(Request $request, $userId) {
+        $user = User::where('id', $userId)
+            ->with('usersFollowings')
+            ->with('usersFollowers')
+            ->with('likes')
+            ->first();
+
+
+        $token = Session::get("token");
+        if (!$token)
+            return new Response(view('error'));
+
+        $authUser = JWTAuth::setToken($token)->authenticate();
+
+        if (!$user || !$authUser)
             return view('error');
 
-        $likes = 3/* UserLike::where('user_id', $id)->get()->count()*/;
-        return view('profile', compact('user', 'likes'));
+        $followers = $user->usersFollowers;
+        $alreadyFollows = false;
+        foreach ($followers as &$follower) {
+            if ($follower->id == $authUser->id) {
+                $alreadyFollows = true;
+            }
+        }
+        $followingsCount = $user->usersFollowings->count();
+        $followersCount = $user->usersFollowers->count();
+        $likesCount = $user->likes->count();
+
+        return view('profile', compact('user', 'alreadyFollows', 'followingsCount', 'followersCount', 'likesCount'));
     }
 }

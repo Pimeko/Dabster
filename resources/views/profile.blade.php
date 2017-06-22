@@ -19,26 +19,28 @@
         <div class="column is-4 name">
           <p>
             <span class="title is-bold">{{ $user->pseudo }}</span>
-            @if ($user->id !== Session::get('user_id'))
+            @if ($alreadyFollows)
+              <span class="button is-primary is-outlined follow">Unfollow</span>
+            @else
               <span class="button is-primary is-outlined follow">Follow</span>
             @endif
           </p>
           <p class="tagline">The users profile bio would go here, of course. It could be two lines</p>
         </div>
         <div class="column is-2 followers has-text-centered">
-          <p class="stat-val">129k</p>
+          <p class="stat-val">{{ $followersCount }}</p>
           <p class="stat-key">suiveurs</p>
         </div>
         <div class="column is-2 following has-text-centered">
-          <p class="stat-val">2k</p>
+          <p class="stat-val">{{ $followingsCount }}</p>
           <p class="stat-key">suivis</p>
         </div>
         <div class="column is-2 likes has-text-centered">
-          @if ($likes > 1)
-            <p class="stat-val">{{ $likes }}</p>
+          @if ($likesCount > 1)
+            <p class="stat-val">{{ $likesCount }}</p>
             <p class="stat-key">réactions</p>
           @else
-            <p class="stat-val">{{ $likes }}</p>
+            <p class="stat-val">{{ $likesCount }}</p>
             <p class="stat-key">réaction</p>
           @endif
         </div>

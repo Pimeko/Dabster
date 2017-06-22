@@ -10,12 +10,9 @@ class CorrectUser
     public function handle($request, Closure $next)
     {
       try {
-          $user = JWTAuth::parseToken()->authenticate();
+          $user = JWTAuth::setToken(Session::get("token"))->authenticate();
 
-          if (!$user) {
-              return response()->json(['user_not_found'], 404);
-          }
-          if ($user->id != $request->user_id) {
+          if ($user->id != $request->route('userId')) {
               return response()->json(['wrong_user'], 403);
           }
 
