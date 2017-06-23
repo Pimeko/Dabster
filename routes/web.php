@@ -29,8 +29,8 @@ Route::group(['middleware' => 'validjwt'], function () {
     Route::get('users/{userId}/likes',          'UsersController@profileLikes');
     Route::get('users/{userId}/followings',     'UsersController@profileFollowings');
     Route::get('users/{userId}/followers',      'UsersController@profileFollowers');
-    Route::get('users/{userId}/edit',           'UsersController@edit');
-    Route::post('users/{userId}/edit', 'UsersController@edit');
+    Route::get('users/{userId}/edit',           'UsersController@profileEdit');
+    Route::post('users/{userId}/edit',          'UsersController@edit');
 });
 
 Route::get('register', function () {

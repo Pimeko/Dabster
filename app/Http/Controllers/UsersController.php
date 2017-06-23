@@ -186,4 +186,9 @@ class UsersController extends Controller
             compact('user', 'alreadyFollows', 'followingsCount', 'page',
                 'followersCount', 'likesCount', 'page', 'content'));
     }
+
+    public function profileEdit(Request $request, $userId) {
+        $user = $this->GetUser($userId);
+        return view('profile.edit', compact('user'));
+    }
 }
