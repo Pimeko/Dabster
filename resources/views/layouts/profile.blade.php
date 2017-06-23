@@ -19,10 +19,12 @@
         <div class="column is-4 name">
           <p>
             <span class="title is-bold">{{ $user->pseudo }}</span>
-            @if ($alreadyFollows)
-              <span class="button is-primary is-outlined follow">Unfollow</span>
-            @else
-              <span class="button is-primary is-outlined follow">Follow</span>
+            @if (Session::get('user_id') !== $user->id)
+              @if ($alreadyFollows)
+                <span class="button is-primary is-outlined follow">Unfollow</span>
+              @else
+                <span class="button is-primary is-outlined follow">Follow</span>
+              @endif
             @endif
           </p>
           <p class="tagline">
@@ -42,11 +44,10 @@
           <p class="stat-key">suivis</p>
         </div>
         <div class="column is-2 likes has-text-centered">
+          <p class="stat-val">{{ $likesCount }}</p>
           @if ($likesCount > 1)
-            <p class="stat-val">{{ $likesCount }}</p>
             <p class="stat-key">réactions</p>
           @else
-            <p class="stat-val">{{ $likesCount }}</p>
             <p class="stat-key">réaction</p>
           @endif
         </div>
@@ -54,13 +55,24 @@
     </div>
     <div class="profile-options">
       <div class="tabs is-fullwidth">
-        <ul>
-          <li class="link is-active"><a><span class="icon"><i class="fa fa-th"></i></span> <span>Mes dabs</span></a></li>
-          <li class="link"><a><span class="icon"><i class="fa fa-list"></i></span> <span>Dabbeurs suivis</span></a></li>
-          <li class="link"><a><span class="icon"><i class="fa fa-heart"></i></span> <span>J'ai réagi</span></a></li>
+        <ul id="myTabs">
+          <li class="{{ $page === 'posts' ? 'link is-active' : 'link' }}"><a href='posts'><span class="icon"><i class="fa fa-th"></i></span> <span>Dabs postés</span></a></li>
+          <li class="{{ $page === 'following' ? 'link is-active' : 'link' }}"><a href='following'><span class="icon"><i class="fa fa-list"></i></span> <span>Dabbeurs suivis</span></a></li>
+          <li class="{{ $page === 'likes' ? 'link is-active' : 'link' }}"><a href='likes'><span class="icon"><i class="fa fa-heart"></i></span> <span>Les réactions</span></a></li>
         </ul>
       </div>
     </div>
+    @yield('tabContent')
   </div>
 
+@endsection
+
+@section('footer')
+  <script>
+    $('#myTabs a').click(function (e) {
+      alert(e)
+      //e.preventDefault()
+      $(this).tab('show')
+    })
+  </sript
 @endsection

@@ -10,6 +10,7 @@ use App\UserLike;
 use JWTAuth;
 use JWTFactory;
 use Session;
+use Redirect;
 use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
 
@@ -87,7 +88,7 @@ class UsersController extends Controller
         return redirect('/');
     }
 
-    public function profile(Request $request, $userId) {
+    public function profile(Request $request, $userId, $page) {
         $user = User::where('id', $userId)
             ->with('usersFollowings')
             ->with('usersFollowers')
@@ -115,6 +116,6 @@ class UsersController extends Controller
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
 
-        return view('profile', compact('user', 'alreadyFollows', 'followingsCount', 'followersCount', 'likesCount'));
+        return view('profile.'.$page, compact('user', 'alreadyFollows', 'followingsCount', 'followersCount', 'likesCount', 'page'));
     }
 }

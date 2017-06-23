@@ -26,8 +26,11 @@
                         <a class="nav-item" href="/">
                             Accueil
                         </a>
-                        <a class="nav-item" href="{{ URL::to('/users/' . Session::get('user_id')) }}">
+                        <a class="nav-item" href="{{ URL::to('/users/' . Session::get('user_id')) .'/posts' }}">
                             Profil
+                        </a>
+                        <a class="nav-item" href="/explorer">
+                            Explorer
                         </a>
                         <a class="nav-item" href="/logout">
                             Se déconnecter
