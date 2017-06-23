@@ -21,17 +21,6 @@ class UsersController extends Controller
         return User::all();
     }
 
-    public function getUser($userId)
-    {
-        $user = User::where('id', $userId)
-            ->with('usersFollowings')
-            ->with('usersFollowers')
-            ->with('likes')
-            ->first();
-
-        return $user;
-    }
-
     // Creates a user and generates a token
     public function register(Request $request)
     {
@@ -100,12 +89,85 @@ class UsersController extends Controller
 
     }
 
-    public function profile(Request $request, $userId, $page) {
-        $user = User::where('id', $userId)
-            ->with('usersFollowings')
-            ->with('usersFollowers')
-            ->with('likes')
-            ->first();
+    private function GetUser($userId)
+    {
+        return User::where('id', $userId)->first();
+    }
+
+    private function GetAuthUser()
+    {
+        return JWTAuth::setToken(Session::get("token"))->authenticate();
+    }
+
+    public function profilePosts(Request $request, $userId) {
+        $user = $this->GetUser($userId);
+        $authUser = $this->GetAuthUser();
+
+        $followers = $user->usersFollowers;
+        $alreadyFollows = false;
+        foreach ($followers as &$follower) {
+            if ($follower->id == $authUser->id) {
+                $alreadyFollows = true;
+            }
+        }
+        $followingsCount = $user->usersFollowings->count();
+        $followersCount = $user->usersFollowers->count();
+        $likesCount = $user->likes->count();
+        $content = $user->posts;
+        $page = 'posts';
+
+        return view('profile.posts',
+            compact('user', 'alreadyFollows', 'followingsCount', 'page',
+                'followersCount', 'likesCount', 'page', 'content'));
+    }
+
+    public function profileLikes(Request $request, $userId) {
+        $user = $this->GetUser($userId);
+        $authUser = $this->GetAuthUser();
+
+        $followers = $user->usersFollowers;
+        $alreadyFollows = false;
+        foreach ($followers as &$follower) {
+            if ($follower->id == $authUser->id) {
+                $alreadyFollows = true;
+            }
+        }
+        $followingsCount = $user->usersFollowings->count();
+        $followersCount = $user->usersFollowers->count();
+        $likesCount = $user->likes->count();
+        $content = $user->likes;
+        $page = 'likes';
+
+        return view('profile.likes',
+            compact('user', 'alreadyFollows', 'followingsCount', 'page',
+                'followersCount', 'likesCount', 'page', 'content'));
+    }
+
+    public function profileFollowings(Request $request, $userId) {
+        $user = $this->GetUser($userId);
+        $authUser = $this->GetAuthUser();
+
+        $followers = $user->usersFollowers;
+        $alreadyFollows = false;
+        foreach ($followers as &$follower) {
+            if ($follower->id == $authUser->id) {
+                $alreadyFollows = true;
+            }
+        }
+        $followingsCount = $user->usersFollowings->count();
+        $followersCount = $user->usersFollowers->count();
+        $likesCount = $user->likes->count();
+        $content = $user->usersFollowings;
+        $page = 'followings';
+
+        return view('profile.followings',
+            compact('user', 'alreadyFollows', 'followingsCount', 'page',
+                'followersCount', 'likesCount', 'page', 'content'));
+    }
+
+    public function profileFollowers(Request $request, $userId) {
+        $user = $this->GetUser($userId);
+        $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
         $alreadyFollows = false;
@@ -117,7 +179,11 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
+        $content = $user->usersFollowers;
+        $page = 'followers';
 
-        return view('profile.'.$page, compact('user', 'alreadyFollows', 'followingsCount', 'followersCount', 'likesCount', 'page'));
+        return view('profile.following',
+            compact('user', 'alreadyFollows', 'followingsCount', 'page',
+                'followersCount', 'likesCount', 'page', 'content'));
     }
 }

@@ -61,9 +61,15 @@
     <div class="profile-options">
       <div class="tabs is-fullwidth">
         <ul id="myTabs">
-          <li class="{{ $page === 'posts' ? 'link is-active' : 'link' }}"><a href='posts'><span class="icon"><i class="fa fa-th"></i></span> <span>Dabs postés</span></a></li>
-          <li class="{{ $page === 'following' ? 'link is-active' : 'link' }}"><a href='following'><span class="icon"><i class="fa fa-list"></i></span> <span>Dabbeurs suivis</span></a></li>
-          <li class="{{ $page === 'likes' ? 'link is-active' : 'link' }}"><a href='likes'><span class="icon"><i class="fa fa-heart"></i></span> <span>Les réactions</span></a></li>
+          <li class="{{ $page === 'posts' ? 'link is-active' : 'link' }}">
+            <a href='posts'><span class="icon"><i class="fa fa-th"></i></span> <span>Dabs postés</span></a>
+          </li>
+          <li class="{{ $page === 'followings' ? 'link is-active' : 'link' }}">
+            <a href='followings'><span class="icon"><i class="fa fa-list"></i></span> <span>Dabbeurs suivis</span></a>
+          </li>
+          <li class="{{ $page === 'likes' ? 'link is-active' : 'link' }}">
+            <a href='likes'><span class="icon"><i class="fa fa-heart"></i></span> <span>Les réactions</span></a>
+          </li>
         </ul>
       </div>
     </div>
