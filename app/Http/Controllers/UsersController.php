@@ -124,7 +124,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->posts()->paginate(2);
+        $content = $user->posts()->paginate(1);
         $page = 'posts';
 
         return view('profile.posts',
@@ -210,8 +210,8 @@ class UsersController extends Controller
         $file = $request->fileToUpload[0];
 
         if ($file) {
-            $file->storeAs($userId, 'pp.jpg');
-            $user->pp = '/img/'.$userId.'/pp.jpg';
+            $file->storeAs('pp', $userId.'.jpg');
+            $user->pp = '/img/pp/'.$userId.'.jpg';
         }
         $user->save();
 
