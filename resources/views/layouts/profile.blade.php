@@ -13,7 +13,7 @@
       <div class="columns">
         <div class="column is-2">
           <div class="image is-128x128 avatar">
-            <img src="https://placehold.it/256x256">
+            <img src="{{ $user->pp }}">
           </div>
         </div>
         <div class="column is-4 name">

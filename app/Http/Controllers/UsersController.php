@@ -40,6 +40,8 @@ class UsersController extends Controller
         $newUser->pseudo = $request->pseudo;
         $newUser->email = $request->email;
         $newUser->password = bcrypt($request->password);
+        $newUser->pp = '/img/default.png';
+        $newUser->description = "";
 
         $newUser->save();
 
@@ -48,7 +50,7 @@ class UsersController extends Controller
             $token = JWTAuth::fromUser($newUser);
             Session::put('user_id', $newUser->id);
             Session::put('token', $token);
-            return PagesController::home();
+            return redirect('/');
             //return response()->json(compact('token'));
         }
         catch (JWTException $e)
@@ -89,9 +91,13 @@ class UsersController extends Controller
     }
 
     public function edit(Request $request, $userId) {
-        print($request->description);
-        $user = User::where('id', $userId)->first();
-        
+        $file = $request->fileToUpload[0];
+
+        if ($file) {
+            $file->storeAs($userId, 'pp.jpg');
+        }
+        //$user = User::where('id', $userId)->first();
+
     }
 
     public function profile(Request $request, $userId, $page) {
