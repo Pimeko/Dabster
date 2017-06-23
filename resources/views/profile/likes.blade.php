@@ -3,5 +3,6 @@
 @section('tabContent')
     <div>
         Likes
+        {{ $content }}
     </div>
 @endsection
