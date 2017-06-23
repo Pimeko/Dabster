@@ -1,0 +1,16 @@
+supprimer user depuis profil
+
+resize image dans profil / publication
+
+feed de :
+- user (personnes suivies)
+- best (les plus likés)
+- discover (les plus récents)
+
+store le token dans les cookies plutôt que session
+
+faire des tests et des tests et des tests
+
+à terme, tout virer dans /api
+
+page d'erreur custom
