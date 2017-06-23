@@ -21,17 +21,6 @@ class UsersController extends Controller
         return User::all();
     }
 
-    public function getUser($userId)
-    {
-        $user = User::where('id', $userId)
-            ->with('usersFollowings')
-            ->with('usersFollowers')
-            ->with('likes')
-            ->first();
-
-        return $user;
-    }
-
     // Creates a user and generates a token
     public function register(Request $request)
     {
@@ -88,13 +77,9 @@ class UsersController extends Controller
         return redirect('/');
     }
 
-    private function GetUserForProfile($userId)
+    private function GetUser($userId)
     {
-        return User::where('id', $userId)
-            ->with('usersFollowings')
-            ->with('usersFollowers')
-            ->with('likes')
-            ->first();
+        return User::where('id', $userId)->first();
     }
 
     private function GetAuthUser()
@@ -103,7 +88,7 @@ class UsersController extends Controller
     }
 
     public function profilePosts(Request $request, $userId) {
-        $user = $this->GetUserForProfile($userId);
+        $user = $this->GetUser($userId);
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
@@ -125,7 +110,7 @@ class UsersController extends Controller
     }
 
     public function profileLikes(Request $request, $userId) {
-        $user = $this->GetUserForProfile($userId);
+        $user = $this->GetUser($userId);
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
@@ -147,7 +132,7 @@ class UsersController extends Controller
     }
 
     public function profileFollowings(Request $request, $userId) {
-        $user = $this->GetUserForProfile($userId);
+        $user = $this->GetUser($userId);
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
@@ -169,7 +154,7 @@ class UsersController extends Controller
     }
 
     public function profileFollowers(Request $request, $userId) {
-        $user = $this->GetUserForProfile($userId);
+        $user = $this->GetUser($userId);
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
