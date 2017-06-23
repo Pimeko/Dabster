@@ -191,4 +191,12 @@ class UsersController extends Controller
         $user = $this->GetUser($userId);
         return view('profile.edit', compact('user'));
     }
+
+    public function updateProfile(Request $request, $userId) {
+        $user = $this->GetUser($userId);
+        $user->description = $request->description;
+        $user->save();
+
+        return redirect('/users/' . $userId);
+    }
 }

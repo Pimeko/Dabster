@@ -23,14 +23,16 @@ Route::post('login', 'UsersController@authenticate');
 Route::get('logout', 'UsersController@logout');
 
 Route::group(['middleware' => 'validjwt'], function () {
-
     Route::get('users/{userId}',                'UsersController@profilePosts');
     Route::get('users/{userId}/posts',          'UsersController@profilePosts');
     Route::get('users/{userId}/likes',          'UsersController@profileLikes');
     Route::get('users/{userId}/followings',     'UsersController@profileFollowings');
     Route::get('users/{userId}/followers',      'UsersController@profileFollowers');
-    Route::get('users/{userId}/edit',           'UsersController@profileEdit');
-    Route::post('users/{userId}/edit',          'UsersController@edit');
+
+    Route::group(['middleware' => 'correctuser'], function () {
+        Route::get('users/{userId}/edit',           'UsersController@profileEdit');
+        Route::put('users/{userId}/edit',                'UsersController@updateProfile');
+    });
 });
 
 Route::get('register', function () {

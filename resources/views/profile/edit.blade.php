@@ -16,7 +16,7 @@
 
         <h1 class="title">Edition de profil</h1>
         
-        {!! Form::open(['style' => 'width:50%;margin:0 auto;', 'files' => 'true']) !!}
+        {!! Form::open(['style' => 'width:50%;margin:0 auto;', 'files' => 'true', 'method' => 'put']) !!}
             <div class="field">
                 <p class="control">
                     {!! Form::file('fileToUpload[]', ['class' => 'inputfile', 'id' => 'fileToUpload']) !!}
