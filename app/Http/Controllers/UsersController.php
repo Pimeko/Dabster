@@ -79,16 +79,6 @@ class UsersController extends Controller
         return redirect('/');
     }
 
-    public function edit(Request $request, $userId) {
-        $file = $request->fileToUpload[0];
-
-        if ($file) {
-            $file->storeAs($userId, 'pp.jpg');
-        }
-        //$user = User::where('id', $userId)->first();
-
-    }
-
     private function GetUser($userId)
     {
         return User::where('id', $userId)->first();
@@ -195,6 +185,13 @@ class UsersController extends Controller
     public function updateProfile(Request $request, $userId) {
         $user = $this->GetUser($userId);
         $user->description = $request->description;
+
+        $file = $request->fileToUpload[0];
+
+        if ($file) {
+            $file->storeAs($userId, 'pp.jpg');
+            $user->pp = '/img/'.$userId.'/pp.jpg';
+        }
         $user->save();
 
         return redirect('/users/' . $userId);
