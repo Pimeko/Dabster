@@ -2,7 +2,10 @@
 
 @section('tabContent')
     <div>
-        Posts
-        {{ $content }}
+        Posts <br/>
+        @foreach ($content as $post)
+            {{ $post->img_path }} <br/>
+        @endforeach
     </div>
+    {{ $content->links() }}
 @endsection

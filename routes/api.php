@@ -8,7 +8,7 @@ Route::get('/users',                        'UsersController@getUsers');
 Route::get('/users/{user}',                 'UsersController@getUser');
 Route::post('/users',                       'UsersController@register');
 
-Route::post('/login',                       'UsersController@authenticate');
+Route::post('/login',                       'UsersController@authenticateAPI');
 
 Route::get('/users/{user}/posts',           'UserPostsController@getPosts');
 Route::get('/users/{user}/followings',      'UserUserController@showFollowings'); // Show users followed by "user"

@@ -73,6 +73,27 @@ class UsersController extends Controller
         }
     }
 
+    public function authenticateAPI(Request $request)
+    {
+        $user = User::where('pseudo', $request->pseudo)->first();
+        $errors = [];
+        try
+        {
+            if (empty($user) || !Hash::check($request->password, $user->password))
+            {
+                array_push($errors, "Mauvais pseudo/mot de passe, veuillez réessayer");
+                return view('login', compact("errors"));
+            }
+            $token = JWTAuth::fromUser($user);
+            return $token;
+        }
+        catch (JWTException $e)
+        {
+            array_push($errors, "Erreur de token");
+            return view('login', compact("errors"));
+        }
+    }
+
     public function logout() {
         Session::remove('token');
         Session::remove('user_id');
@@ -103,7 +124,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->posts;
+        $content = $user->posts()->paginate(2);
         $page = 'posts';
 
         return view('profile.posts',
