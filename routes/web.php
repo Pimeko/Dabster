@@ -24,6 +24,7 @@ Route::get('logout', 'UsersController@logout');
 
 Route::group(['middleware' => 'validjwt'], function () {
     Route::get('users/{userId}/{page}', 'UsersController@profile');
+    Route::post('users/{userId}/edit', 'UsersController@edit');
 });
 
 Route::get('register', function () {

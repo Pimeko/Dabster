@@ -88,6 +88,12 @@ class UsersController extends Controller
         return redirect('/');
     }
 
+    public function edit(Request $request, $userId) {
+        print($request->description);
+        $user = User::where('id', $userId)->first();
+        
+    }
+
     public function profile(Request $request, $userId, $page) {
         $user = User::where('id', $userId)
             ->with('usersFollowings')
@@ -95,23 +101,13 @@ class UsersController extends Controller
             ->with('likes')
             ->first();
 
-
-        $token = Session::get("token");
-        if (!$token)
-            return new Response(view('error'));
-
-        $authUser = JWTAuth::setToken($token)->authenticate();
-
-        if (!$user || !$authUser)
-            return view('error');
-
         $followers = $user->usersFollowers;
         $alreadyFollows = false;
-        foreach ($followers as &$follower) {
-            if ($follower->id == $authUser->id) {
+
+        foreach ($followers as $follower)
+            if ($follower->id == $authUser->id)
                 $alreadyFollows = true;
-            }
-        }
+
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();

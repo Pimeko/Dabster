@@ -28,10 +28,15 @@
             @endif
           </p>
           <p class="tagline">
-            @if ($user->description == "")
+            @if ($user->description === "")
               Editez votre profil pour ajouter une description.
             @else
               {{ $user->description  }}
+            @endif
+          </p>
+          <p>
+            @if (Session::get('user_id') === $user->id)
+              <a href="edit" class="button is-primary is-outlined follow">Editer profil</a>
             @endif
           </p>
         </div>
