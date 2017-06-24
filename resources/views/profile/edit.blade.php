@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Edition de profil')
+
 @section('includes')
     <link href="/css/edit.css" rel="stylesheet">
 @endsection
@@ -16,10 +18,10 @@
 
         <h1 class="title">Edition de profil</h1>
         
-        {!! Form::open(['style' => 'width:50%;margin:0 auto;', 'files' => 'true', 'method' => 'put']) !!}
+        {!! Form::open(['style' => 'width:50%;margin:0 auto;', 'files' => 'true', 'enctype' => "multipart/form-data", 'method' => 'put']) !!}
             <div class="field">
                 <p class="control">
-                    {!! Form::file('fileToUpload[]', ['class' => 'inputfile', 'id' => 'fileToUpload']) !!}
+                    {!! Form::file('pp', ['class' => 'inputfile', 'id' => 'fileToUpload']) !!}
                     <label for="fileToUpload">
                         <i class="fa fa-upload"></i>
                         <span>Changer de photo de profil</span>

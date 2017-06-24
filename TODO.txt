@@ -1,6 +1,6 @@
 supprimer user depuis profil
 
-resize image dans profil / publication
+resize image dans publication
 
 feed de :
 - user (personnes suivies)

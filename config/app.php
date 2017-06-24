@@ -182,6 +182,9 @@ return [
 
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class, // JWT
 
+        //Intervention Image
+        Intervention\Image\ImageServiceProvider::class,
+
     ],
 
     /*
@@ -238,6 +241,9 @@ return [
         
         'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
+
+        //Intervention Image
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

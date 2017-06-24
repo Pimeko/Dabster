@@ -11,6 +11,8 @@ use JWTAuth;
 use JWTFactory;
 use Session;
 use Redirect;
+use Image;
+use Storage;
 use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
 
@@ -207,10 +209,15 @@ class UsersController extends Controller
         $user = $this->GetUser($userId);
         $user->description = $request->description;
 
-        $file = $request->fileToUpload[0];
+       // var_dump($request->pp);
 
-        if ($file) {
-            $file->storeAs('pp', $userId.'.jpg');
+        if ($request->pp)
+        {
+            $file = $request->pp;
+            $path = $file->storeAs('pp', $userId.'.jpg');
+            print_r($path);
+            $image = Image::make(Storage::disk('local')->get($path))->resize(256, 256)->stream();
+            Storage::disk('local')->put($path, $image);
             $user->pp = '/img/pp/'.$userId.'.jpg';
         }
         $user->save();
