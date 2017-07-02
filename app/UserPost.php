@@ -13,6 +13,11 @@ class UserPost extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function commentsOnly()
+    {
+        return $this->hasMany(UserComment::class);
+    }
+
     public function comments()
     {
         return $this->hasMany(UserComment::class)->with('user')->orderByDesc('comment_date');

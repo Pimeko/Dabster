@@ -11,7 +11,7 @@ use Session;
 
 class UserCommentsController extends Controller
 {
-    public function addComment(UserPost $post, Request $request)
+    public function add(UserPost $post, Request $request)
     {
         $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
         $newComment = new UserComment;
@@ -23,5 +23,15 @@ class UserCommentsController extends Controller
 
         $newComment->save();
         return redirect('/posts/' . $post->id);
+    }
+
+    public function remove($commentId)
+    {
+        $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
+        $comment = UserComment::where('id', $commentId)->first();
+        $postId = $comment->user_post_id;
+        if ($comment && $authUser->id == $comment->user_id)
+            $comment->delete();
+        return redirect('/posts/' . $postId);
     }
 }

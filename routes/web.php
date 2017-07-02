@@ -27,21 +27,24 @@ Route::get('posts/{postId}', 'UserPostsController@get');
 
 Route::group(['middleware' => 'validjwt'], function () {
     Route::get('logout', 'UsersController@logout');
+
+    // users
     Route::get('users/{userId}',                'UsersController@profilePosts');
     Route::get('users/{userId}/posts',          'UsersController@profilePosts');
     Route::get('users/{userId}/likes',          'UsersController@profileLikes');
     Route::get('users/{userId}/followings',     'UsersController@profileFollowings');
     Route::get('users/{userId}/followers',      'UsersController@profileFollowers');
 
+    // posts
     Route::post('/posts/{post}/likes',          'UserLikesController@changeLike');
-    Route::post('/posts/{post}/comments',       'UserCommentsController@addComment');
+    Route::post('/posts/{post}/comments',       'UserCommentsController@add');
+    Route::delete('/posts/{postId}',            'UserPostsController@remove');
+    Route::delete('/comments/{commentId}',      'UserCommentsController@remove');
 
     Route::group(['middleware' => 'correctuser'], function () {
         Route::get('users/{userId}/edit',           'UsersController@profileEdit');
         Route::put('users/{userId}/edit',           'UsersController@updateProfile');
         Route::get('users/{userId}/feed',           'UsersController@feed');
-
-
     });
 });
 

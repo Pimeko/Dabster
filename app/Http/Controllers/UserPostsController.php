@@ -58,4 +58,23 @@ class UserPostsController extends Controller
         $comments = $user_post->comments;
         return view('post', compact('user_post', 'auth_like_id', 'comments'));
     }
+
+    public function remove($postId)
+    {
+        $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
+        $post = UserPost::where('id', $postId)->first();
+        if ($post && $authUser->id == $post->user_id)
+        {
+            $comments = $post->commentsOnly;
+            foreach ($comments as $comment)
+                $comment->delete();
+
+            $likes = $post->likes;
+            foreach ($likes as $like)
+                $like->delete();
+
+            $post->delete();
+        }
+        return redirect('/');
+    }
 }

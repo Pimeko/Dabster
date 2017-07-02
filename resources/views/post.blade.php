@@ -16,7 +16,9 @@
                         <br/>
                         {{$user_post->description}}
                         <br>
-                        <small>{{$user_post->post_date}}</small>
+                        <small>
+                            Le {{ Carbon\Carbon::parse($user_post->post_date)->format('d-m-Y à h:m:s') }}
+                        </small>
                     </div>
                 </div>
 
@@ -39,7 +41,17 @@
                     </footer>
                     <footer class="card-footer">
                         @if (Session::get('user_id') == $user_post->user_id)
-                            <a class="card-footer-item">Supprimer la publication</a>
+
+                            {!! Form::open([
+                                'url' => '/posts/' . $user_post->id,
+                                'method' => 'delete'
+                            ]) !!}
+
+
+                            {{ Form::button('Supprimer la publication',
+                            ['type' => 'submit', 'class' => 'card-footer-item'] )  }}
+
+                            {!! Form::close() !!}
                         @endif
                     </footer>
                 @endif
@@ -77,7 +89,18 @@
 
                 <footer class="card-footer">
                     @if (Session::get('user_id') == $comment->user->id)
-                        <a class="card-footer-item">Supprimer</a>
+
+                        {!! Form::open([
+                            'url' => '/comments/' . $comment->id,
+                            'method' => 'delete'
+                        ]) !!}
+
+
+                        {{ Form::button('Supprimer',
+                        ['type' => 'submit', 'class' => 'card-footer-item'] )  }}
+
+                        {!! Form::close() !!}
+
                     @endif
                 </footer>
             </div>
