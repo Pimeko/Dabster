@@ -148,7 +148,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->likes()->paginate(6);
+        $content = UserLike::where('user_id', $user->id)->with('user_posts')->paginate(6);
         $page = 'likes';
 
         return view('profile.likes',

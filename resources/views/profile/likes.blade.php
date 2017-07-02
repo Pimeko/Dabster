@@ -6,11 +6,11 @@
             <div class="card">
                 <div class="card-content">
                     <div class="content">
-                        <img src="{{$post->img_path}}" style="display:block; margin: 0 auto;"/>
+                        <img src="{{$post->user_posts->img_path}}" style="display:block; margin: 0 auto;"/>
                         <br/>
-                        {{$post->description}}
+                        {{$post->user_posts->description}}
                         <br>
-                        <small>{{$post->post_date}}</small>
+                        <small>{{$post->user_posts->post_date}}</small>
                     </div>
                 </div>
                 <footer class="card-footer">
