@@ -53,7 +53,19 @@
         <div class="container">
             @yield('content')
         </div>
+        <br/>
 
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p>
+                    <strong>Dabster inc. & associates</strong>
+                    <br/>
+                    Benjamin Widawski - Yassine Ammar - Thibault Virsolvy - Maximilien Gomes
+                    <br/>
+                    EPITA 2018 - All rights reserved ©
+                </p>
+            </div>
+        </footer>
         @yield('footer')
     </body>
 </html>

@@ -45,10 +45,14 @@ class UserPostsController extends Controller
 
     public function get($postId)
     {
-        $authUser = Session::has("token") ? JWTAuth::setToken(Session::get("token"))->authenticate() : null;
+        $isConnected = Session::has("token");
+        $authUser = $isConnected ?
+            JWTAuth::setToken(Session::get("token"))->authenticate() : null;
         $user_post = UserPost::where('id', $postId)->first();
-        $auth_like = Session::has("token") ? UserLike::where('user_id', $authUser->id)->where('user_post_id', $postId)->first() : null;
-        $auth_like_id = Session::has("token") ? $auth_like ? $auth_like->type : -1 : null;
+        $auth_like = $isConnected ?
+            UserLike::where('user_id', $authUser->id)->where('user_post_id', $postId)->first() : null;
+        $auth_like_id = $isConnected ?
+            $auth_like ? $auth_like->type : -1 : null;
         return view('post', compact('user_post', 'auth_like_id'));
     }
 }

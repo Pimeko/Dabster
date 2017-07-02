@@ -14,26 +14,36 @@ class ValidJWT
       try {
           $token = Session::get("token");
           if (!$token)
-              return new Response(view('error'));
+          {
+              Session::flush();
+              $message = "You must be connected to access this page.";
+              return new Response(view('error', compact('message')));
+          }
 
           $user = JWTAuth::setToken($token)->authenticate();
           if (!$user)
-              return new Response(view('error'));
+          {
+              Session::flush();
+              $message = "Invalid token : please connect again.";
+              return new Response(view('error', compact('message')));
+          }
 
           return $next($request);
 
       } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-          return view("error");
-          //return response()->json(['token_expired'], $e->getStatusCode());
+          Session::flush();
+          $message = "Token expired : please connect again.";
+          return view("error", compact('message'));
 
       } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-          return view("error");
-          //return response()->json(['token_invalid'], $e->getStatusCode());
+          Session::flush();
+          $message = "Invalid token : please connect again.";
+          return view("error", compact('message'));
 
       } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-          return view("error");
-          //return response()->json(['token_absent'], $e->getStatusCode());
-
+          Session::flush();
+          $message = "Invalid token : please connect again.";
+          return view("error", compact('message'));
       }
 
     }
