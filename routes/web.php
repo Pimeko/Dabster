@@ -40,6 +40,7 @@ Route::group(['middleware' => 'validjwt'], function () {
     Route::post('/posts/{post}/comments',       'UserCommentsController@add');
     Route::delete('/posts/{postId}',            'UserPostsController@remove');
     Route::delete('/comments/{commentId}',      'UserCommentsController@remove');
+    Route::post('/users/{userId}/followings',   'UserUserController@follow'); // user follows "followed"
 
     Route::group(['middleware' => 'correctuser'], function () {
         Route::get('users/{userId}/edit',           'UsersController@profileEdit');

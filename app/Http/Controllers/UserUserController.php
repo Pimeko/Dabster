@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use App\UserUser;
-use App\Services\PushService;
+use Session;
+use JWTAuth;
 
 class UserUserController extends Controller
 {
@@ -34,12 +35,19 @@ class UserUserController extends Controller
     return json_encode($res);
   }
 
-  public function follow(User $user, Request $request)
+  public function follow($userId, Request $request)
   {
-    // Unfollow
-    if ($user->usersFollowers()->where('follower_id', $request->user_id)->get()->count() > 0)
-      $user->usersFollowers()->detach($request->user_id);
-    else // Follow
-      $user->usersFollowers()->attach($request->user_id);
+      $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
+      $user = User::where('id', $userId)->first();
+      if ($user)
+      {
+          // Unfollow
+          if ($user->usersFollowers()->where('follower_id', $authUser->id)->get()->count() > 0)
+              $user->usersFollowers()->detach($authUser->id);
+          else // Follow
+              $user->usersFollowers()->attach($authUser->id);
+      }
+
+      return redirect('/users/' . $userId);
   }
 }
