@@ -40,4 +40,10 @@ class UserPostsController extends Controller
 
         $newUserPost->save();
     }
+
+    public function get($postId)
+    {
+        $user_post = UserPost::where('id', $postId)->first();
+        return view('post', compact('user_post'));
+    }
 }

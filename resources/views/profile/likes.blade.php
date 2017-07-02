@@ -3,6 +3,7 @@
 @section('tabContent')
     <div>
         @foreach ($content as $like)
+            <a href={{"/posts/" . $like->user_posts->id}}>
             <div class="card">
                 <div class="card-content">
                     <div class="content">
@@ -13,27 +14,8 @@
                         <small>{{$like->user_posts->post_date}}</small>
                     </div>
                 </div>
-                <footer class="card-footer">
-                    <a class="card-footer-item">
-                        <img src="/img/reactions/0.png" width="150" height="150"/>
-                    </a>
-                    <a class="card-footer-item">
-                        <img src="/img/reactions/1.png" width="150" height="150"/>
-                    </a>
-                    <a class="card-footer-item">
-                        <img src="/img/reactions/2.png" width="150" height="150"/>
-                    </a>
-                    <a class="card-footer-item">
-                        <img src="/img/reactions/3.png" width="150" height="150"/>
-                    </a>
-                </footer>
-                <footer class="card-footer">
-                    <a class="card-footer-item">Commenter</a>
-                    @if (Session::get('user_id') == $like->user_posts->user_id)
-                        <a class="card-footer-item">Supprimer</a>
-                    @endif
-                </footer>
             </div>
+            </a>
             <br/>
         @endforeach
     </div>

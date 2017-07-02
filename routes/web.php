@@ -22,6 +22,8 @@ Route::post('login', 'UsersController@authenticate');
 
 Route::get('logout', 'UsersController@logout');
 
+Route::get('posts/{postId}', 'UserPostsController@get');
+
 Route::group(['middleware' => 'validjwt'], function () {
     Route::get('users/{userId}',                'UsersController@profilePosts');
     Route::get('users/{userId}/posts',          'UsersController@profilePosts');
@@ -29,10 +31,13 @@ Route::group(['middleware' => 'validjwt'], function () {
     Route::get('users/{userId}/followings',     'UsersController@profileFollowings');
     Route::get('users/{userId}/followers',      'UsersController@profileFollowers');
 
+    Route::post('/posts/{post}/likes',          'UserLikesController@changeLike');
+
     Route::group(['middleware' => 'correctuser'], function () {
         Route::get('users/{userId}/edit',           'UsersController@profileEdit');
         Route::put('users/{userId}/edit',           'UsersController@updateProfile');
         Route::get('users/{userId}/feed',           'UsersController@feed');
+
     });
 });
 

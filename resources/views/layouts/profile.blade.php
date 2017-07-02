@@ -4,6 +4,7 @@
 
 @section('includes')
         <link href="/css/profile.css" rel="stylesheet">
+        <link href="/css/reaction.css" rel="stylesheet">
 @endsection
 
 @section('content')
