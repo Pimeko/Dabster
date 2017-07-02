@@ -18,7 +18,7 @@
             <div class="container">
                 <div class="nav-left">
                     <a class="nav-item" href="/">
-                        <img src="img/420px-logo.png" alt="Logo">
+                        <img src="/img/logo.png" alt="Logo">
                     </a>
                 </div>
                 <div class="nav-right">
