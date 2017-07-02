@@ -70,7 +70,8 @@
                     <p class="subtitle">
                         de <a href="{{"/users/" . $comment->user->id}}">{{$comment->user->pseudo }}</a>
                         <br/>
-                        <small>{{$comment->comment_date}}</small>
+                        <small>
+                            Le {{ Carbon\Carbon::parse($comment->comment_date)->format('d-m-Y à h:m:s') }}</small>
                     </p>
                 </div>
 
@@ -80,6 +81,7 @@
                     @endif
                 </footer>
             </div>
+            <br/>
         @endforeach
     </div>
 

@@ -15,7 +15,7 @@ class UserPost extends Model
 
     public function comments()
     {
-        return $this->hasMany(UserComment::class)->with('user');
+        return $this->hasMany(UserComment::class)->with('user')->orderByDesc('comment_date');
     }
 
     public function likes()
