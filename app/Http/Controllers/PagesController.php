@@ -2,12 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\UserPost;
+use Session;
+use JWTAuth;
 
 class PagesController extends Controller
 {
     public static function home() {
-        $users = User::all();
-        return view('home', compact('users'));
+        try {
+            $token = Session::get("token");
+            if (!$token)
+            {
+                $posts = UserPost::all();
+                return view('home', compact('posts'));
+            }
+
+            $user = JWTAuth::setToken($token)->authenticate();
+            if (!$user)
+            {
+                Session::flush();
+                return redirect('/');
+            }
+
+            // feed for connected user
+            return redirect('/users/' . $user->id . '/feed');
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            Session::flush();
+            return redirect('/');
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            Session::flush();
+            return redirect('/');
+
+        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+            Session::flush();
+            return redirect('/');
+        }
+
     }
 }

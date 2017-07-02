@@ -30,6 +30,11 @@ class User extends Authenticatable
         return $this->hasMany(UserLike::class);
     }
 
+    public function feed()
+    {
+        return $this->belongsToMany(User::class, 'user_user', 'follower_id', 'followed_id');
+    }
+
     protected $hidden = [
         'password'
     ];

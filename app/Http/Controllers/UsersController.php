@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\User;
 use App\UserLike;
+use App\UserPost;
 use JWTAuth;
 use JWTFactory;
 use Session;
@@ -209,8 +210,6 @@ class UsersController extends Controller
         $user = $this->GetUser($userId);
         $user->description = $request->description;
 
-       // var_dump($request->pp);
-
         if ($request->pp)
         {
             $file = $request->pp;
@@ -228,6 +227,8 @@ class UsersController extends Controller
     public function feed($userId)
     {
         $user = $this->GetUser($userId);
+        $posts = $user->feed();
 
+        return view('home', compact('posts'));
     }
 }

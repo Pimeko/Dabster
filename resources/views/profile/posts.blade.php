@@ -11,7 +11,9 @@
                             <br/>
                             {{$post->description}}
                             <br>
-                            <small>{{$post->post_date}}</small>
+                            <small>
+                                Le {{ Carbon\Carbon::parse($post->post_date)->format('d-m-Y à h:m:s') }}
+                            </small>
                         </div>
                     </div>
                     <footer class="card-footer">
