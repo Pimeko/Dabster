@@ -51,6 +51,11 @@ class UsersController extends Controller
         }
     }
 
+    public function loginView()
+    {
+
+    }
+
     // Check user's credentials and generates a token
     public function authenticate(Request $request)
     {

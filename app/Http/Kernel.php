@@ -58,5 +58,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'validjwt' => 'App\Http\Middleware\ValidJWT',
         'correctuser' => 'App\Http\Middleware\CorrectUser',
+        'notconnected' => 'App\Http\Middleware\NotConnected',
     ];
 }

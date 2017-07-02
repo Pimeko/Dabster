@@ -15,16 +15,18 @@ use App\Http\Controllers\UsersController;
 
 Route::get('/', 'PagesController@home');
 
-Route::get('login', function () {
-    return view('login');
+Route::group(['middleware' => 'notconnected'], function () {
+    Route::get('login', function () {
+        return view('login');
+    });
+    Route::post('login', 'UsersController@authenticate');
 });
-Route::post('login', 'UsersController@authenticate');
 
-Route::get('logout', 'UsersController@logout');
 
 Route::get('posts/{postId}', 'UserPostsController@get');
 
 Route::group(['middleware' => 'validjwt'], function () {
+    Route::get('logout', 'UsersController@logout');
     Route::get('users/{userId}',                'UsersController@profilePosts');
     Route::get('users/{userId}/posts',          'UsersController@profilePosts');
     Route::get('users/{userId}/likes',          'UsersController@profileLikes');

@@ -24,7 +24,7 @@
             <div class="field">
                 {!! Form::label('password', 'Mot de passe:', ['class' => 'label']) !!}
                 <p class="control">
-                    {!! Form::text('password', null, ['class' => 'input']) !!}
+                    {!! Form::password('password', ['class' => 'input']) !!}
                 </p>
             </div>
             <div class="field">
