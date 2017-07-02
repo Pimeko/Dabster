@@ -126,7 +126,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->posts()->paginate(1);
+        $content = $user->posts()->paginate(6);
         $page = 'posts';
 
         return view('profile.posts',
@@ -148,7 +148,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->likes;
+        $content = $user->likes()->paginate(6);
         $page = 'likes';
 
         return view('profile.likes',
@@ -170,7 +170,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->usersFollowings;
+        $content = $user->usersFollowings()->paginate(6);
         $page = 'followings';
 
         return view('profile.followings',
@@ -192,7 +192,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->usersFollowers;
+        $content = $user->usersFollowers()->paginate(6);
         $page = 'followers';
 
         return view('profile.following',
