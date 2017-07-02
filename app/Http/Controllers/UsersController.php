@@ -224,4 +224,10 @@ class UsersController extends Controller
 
         return redirect('/users/' . $userId);
     }
+
+    public function feed($userId)
+    {
+        $user = $this->GetUser($userId);
+
+    }
 }

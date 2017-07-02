@@ -27,7 +27,8 @@ class User extends Authenticatable
 
     public function likes()
     {
-        return $this->hasMany(UserLike::class);
+        return $this->hasManyThrough(UserPost::class, UserLike::class,
+            'user_id', 'id', 'post_id');
     }
 
     protected $hidden = [

@@ -2,7 +2,6 @@
 
 @section('tabContent')
     <div>
-        Posts <br/><br/>
         @foreach ($content as $post)
             <div class="card">
                 <div class="card-content">
