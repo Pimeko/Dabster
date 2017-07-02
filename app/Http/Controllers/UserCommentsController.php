@@ -11,9 +11,10 @@ class UserCommentsController extends Controller
 {
     public function addComment(UserPost $post, Request $request)
     {
+        $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
         $newComment = new UserComment;
 
-        $newComment->user_id = $request->user_id;
+        $newComment->user_id = $authUser->id;
         $newComment->post_id = $post->id;
         $newComment->data = $request->data;
         $newComment->comment_date = Carbon::now();

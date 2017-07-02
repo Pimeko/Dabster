@@ -38,15 +38,49 @@
                         @endfor
                     </footer>
                     <footer class="card-footer">
-                        <a class="card-footer-item">Commenter</a>
                         @if (Session::get('user_id') == $user_post->user_id)
                             <a class="card-footer-item">Supprimer</a>
                         @endif
                     </footer>
                 @endif
             </div>
-
         <br/>
+
+        <div class="field">
+            {!! Form::open([
+                'url' => '/posts/' . $user_post->id . '/comments',
+                'method' => 'post'
+            ]) !!}
+            <p class="control">
+                {!! Form::label('label', 'COMMENTAIRES', ['class' => 'label']) !!}
+                {!! Form::textarea('data', 'Votre commentaire sur ce dab', ['class' => 'textarea']) !!}
+            </p>
+
+            {{ Form::submit('Poster', ['class' => 'button is-primary'] )  }}
+
+            {!! Form::close() !!}
+        </div>
+
+        @foreach ($comments as $comment)
+            <div class="card">
+                <div class="card-content">
+                    <p class="title">
+                        {{$comment->data}}
+                    </p>
+                    <p class="subtitle">
+                        de <a href="{{"/users/" . $comment->user->id}}">{{$comment->user->pseudo }}</a>
+                        <br/>
+                        <small>{{$comment->comment_date}}</small>
+                    </p>
+                </div>
+
+                <footer class="card-footer">
+                    @if (Session::get('user_id') == $comment->user->id)
+                        <a class="card-footer-item">Supprimer</a>
+                    @endif
+                </footer>
+            </div>
+        @endforeach
     </div>
 
 @endsection

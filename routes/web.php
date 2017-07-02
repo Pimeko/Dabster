@@ -40,6 +40,8 @@ Route::group(['middleware' => 'validjwt'], function () {
         Route::put('users/{userId}/edit',           'UsersController@updateProfile');
         Route::get('users/{userId}/feed',           'UsersController@feed');
 
+        Route::post('/posts/{post}/comments',       'UserCommentsController@addComment');
+
     });
 });
 
