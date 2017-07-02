@@ -39,7 +39,7 @@
                     </footer>
                     <footer class="card-footer">
                         @if (Session::get('user_id') == $user_post->user_id)
-                            <a class="card-footer-item">Supprimer</a>
+                            <a class="card-footer-item">Supprimer la publication</a>
                         @endif
                     </footer>
                 @endif
@@ -53,7 +53,7 @@
             ]) !!}
             <p class="control">
                 {!! Form::label('label', 'COMMENTAIRES', ['class' => 'label']) !!}
-                {!! Form::textarea('data', 'Votre commentaire sur ce dab', ['class' => 'textarea']) !!}
+                {!! Form::textarea('data', null, ['class' => 'textarea', 'placeholder' => 'Votre commentaire sur ce dab']) !!}
             </p>
 
             {{ Form::submit('Poster', ['class' => 'button is-primary'] )  }}

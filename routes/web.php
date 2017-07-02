@@ -34,13 +34,13 @@ Route::group(['middleware' => 'validjwt'], function () {
     Route::get('users/{userId}/followers',      'UsersController@profileFollowers');
 
     Route::post('/posts/{post}/likes',          'UserLikesController@changeLike');
+    Route::post('/posts/{post}/comments',       'UserCommentsController@addComment');
 
     Route::group(['middleware' => 'correctuser'], function () {
         Route::get('users/{userId}/edit',           'UsersController@profileEdit');
         Route::put('users/{userId}/edit',           'UsersController@updateProfile');
         Route::get('users/{userId}/feed',           'UsersController@feed');
 
-        Route::post('/posts/{post}/comments',       'UserCommentsController@addComment');
 
     });
 });
