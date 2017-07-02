@@ -11,34 +11,27 @@ use Session;
 class UserLikesController extends Controller
 {
     public function changeLike(UserPost $post, Request $request)
-    {/*
-        if ($request->has('_method'))
-        {
-            if ($request->_method == 'PUT')
-                $this->putLike($post, $request);
-            else if ($request->_method == 'DELETE')
-                $this->deleteLike($post, $request);
-        }
-        else*/
-        return    $this->postLike($post, $request);
-    }
-
-    public function putLike(UserPost $post, Request $request)
-    {
-        $currLike = UserLike::where('user_id', $request->user_id)->where('post_id', $post->id)->first();
-        $currLike->type = $request->type;
-        $currLike->save();
-    }
-
-    public function deleteLike(UserPost $post, Request $request)
-    {
-        $currLike = UserLike::where('user_id', $request->user_id)->where('post_id', $post->id)->first();
-        $currLike->delete();
-    }
-
-    public function postLike(UserPost $post, Request $request)
     {
         $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
+        $currLike = UserLike::where('user_id', $authUser->id)->where('user_post_id', $post->id)->first();
+        if ($currLike)
+        {
+            if ($currLike->type == $request->like_id)
+                $currLike->delete();
+            else
+            {
+                $currLike->type = $request->like_id;
+                $currLike->save();
+            }
+        }
+        else
+            $this->postLike($post, $request, $authUser);
+
+        return redirect('/posts/' . $post->id);
+    }
+
+    public function postLike(UserPost $post, Request $request, $authUser)
+    {
         $newLike = new UserLike;
 
         $newLike->user_id = $authUser->id;
@@ -46,7 +39,5 @@ class UserLikesController extends Controller
         $newLike->type = $request->like_id;
 
         $newLike->save();
-
-        return redirect('/users/' . $post->user_id . '/likes');
     }
 }

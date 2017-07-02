@@ -2,7 +2,6 @@
 
 @section('tabContent')
     <div>
-
         @foreach ($content as $post)
             <a href={{"/posts/" . $post->id}}>
                 <div class="card">
@@ -15,7 +14,11 @@
                             <small>{{$post->post_date}}</small>
                         </div>
                     </div>
+                    <footer class="card-footer">
+                        <span class="card-footer-item">Réagir</span>
+                    </footer>
                 </div>
+
             </a>
             <br/>
         @endforeach

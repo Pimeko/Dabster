@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\User;
 use App\UserPost;
+use App\UserLike;
 use JWTAuth;
 use JWTFactory;
+use Session;
 use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
 
@@ -43,7 +45,10 @@ class UserPostsController extends Controller
 
     public function get($postId)
     {
+        $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
         $user_post = UserPost::where('id', $postId)->first();
-        return view('post', compact('user_post'));
+        $auth_like = UserLike::where('user_id', $authUser->id)->where('user_post_id', $postId)->first();
+        $auth_like_id = $auth_like ? $auth_like->type : -1;
+        return view('post', compact('user_post', 'auth_like_id'));
     }
 }
