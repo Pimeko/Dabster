@@ -84,12 +84,17 @@
                 'url' => '/posts/' . $user_post->id . '/comments',
                 'method' => 'post'
             ]) !!}
+            {!! Form::label('label', 'COMMENTAIRES', ['class' => 'label']) !!}
+
+            @if (Session::has('token'))
             <p class="control">
-                {!! Form::label('label', 'COMMENTAIRES', ['class' => 'label']) !!}
                 {!! Form::textarea('data', null, ['class' => 'textarea', 'placeholder' => 'Votre commentaire sur ce dab']) !!}
             </p>
 
             {{ Form::submit('Poster', ['class' => 'button is-primary'] )  }}
+            @else
+                Il faut être connecté pour pouvoir commenter et réagir aux dabs. <a href="/login">Connectez-vous !</a>
+            @endif
 
             {!! Form::close() !!}
         </div>

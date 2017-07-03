@@ -12,7 +12,7 @@ class UserLikesController extends Controller
 {
     public function changeLike($postId, Request $request)
     {
-        $post = UserPost::where('id', $postId);
+        $post = UserPost::where('id', $postId)->first();
         if ($post)
         {
             $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
