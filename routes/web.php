@@ -50,6 +50,9 @@ Route::group(['middleware' => 'validjwt'], function () {
     Route::get('recent',                        'UserPostsController@recent');
     Route::get('random',                        'UserPostsController@random');
 
+    Route::get('upload',                        'UserPostsController@uploadPage');
+    Route::post('upload',                       'UserPostsController@upload');
+
     Route::group(['middleware' => 'correctuser'], function () {
         Route::get('users/{userId}/edit',           'UsersController@profileEdit');
         Route::put('users/{userId}/edit',           'UsersController@updateProfile');

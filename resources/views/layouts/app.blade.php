@@ -26,7 +26,7 @@
                         <a class="nav-item" href="/">
                             Accueil
                         </a>
-                        <a class="nav-item" href="/">
+                        <a class="nav-item" href="/upload">
                             Poster un dab
                         </a>
                         <a class="nav-item" href="{{ URL::to('/users/' . Session::get('user_id')) .'/posts' }}">

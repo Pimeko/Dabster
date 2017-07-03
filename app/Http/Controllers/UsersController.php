@@ -104,6 +104,7 @@ class UsersController extends Controller
             ->with('user')
             ->withCount('comments')
             ->withCount('likes')
+            ->orderByDesc('post_date')
             ->paginate(4);
         $page = 'posts';
 

@@ -119,4 +119,36 @@ class UserPostsController extends Controller
         $page = "random";
         return view('home', compact('posts', 'page', 'user'));
     }
+
+    public function uploadPage()
+    {
+        return view('upload');
+    }
+
+    public function upload(Request $request)
+    {
+        $user = $this->GetAuthUser();
+
+        $newUserPost = new UserPost;
+        $newUserPost->user_id = $user->id;
+
+        // Save image on server
+        if ($request->image)
+        {
+            $file = $request->file('image');
+            $file->storeAs($user->id, $file->getClientOriginalName());
+            $fullPath = '/img/' . $user->id . '/' . $file->getClientOriginalName();
+        }
+        $user->save();
+
+        $newUserPost->img_path = $fullPath;
+        $newUserPost->post_date = Carbon::now();
+
+        if ($request->has('description'))
+            $newUserPost->description = $request->description;
+
+        $newUserPost->save();
+
+        return redirect('/');
+    }
 }
