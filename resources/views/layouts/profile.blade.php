@@ -27,7 +27,7 @@
               ]) !!}
 
 
-              @if ($alreadyFollows)
+              @if ($generalData['alreadyFollows'])
                 {{ Form::submit('Unfollow', ['class' => 'button is-primary'] )  }}
               @else
                 {{ Form::submit('Follow', ['class' => 'button is-primary'] )  }}
@@ -49,22 +49,24 @@
             @endif
           </p>
         </div>
+
         <div class="column is-2 followers has-text-centered">
-          <p class="stat-val">{{ $followersCount }}</p>
+          <p class="stat-val">{{ $generalData['followersCount']}}</p>
           <p class="stat-key">suiveurs</p>
         </div>
         <div class="column is-2 following has-text-centered">
-          <p class="stat-val">{{ $followingsCount }}</p>
+          <p class="stat-val">{{ $generalData['followingsCount'] }}</p>
           <p class="stat-key">suivis</p>
         </div>
         <div class="column is-2 likes has-text-centered">
-          <p class="stat-val">{{ $likesCount }}</p>
-          @if ($likesCount > 1)
+          <p class="stat-val">{{ $generalData['likesCount'] }}</p>
+          @if ($generalData['likesCount'] > 1)
             <p class="stat-key">réactions</p>
           @else
             <p class="stat-key">réaction</p>
           @endif
         </div>
+
       </div>
     </div>
     <br/>
@@ -72,13 +74,19 @@
       <div class="tabs is-fullwidth">
         <ul id="myTabs">
           <li class="{{ $page === 'posts' ? 'link is-active' : 'link' }}">
-            <a href={{ '/users/' . $user->id . '/posts'}}><span class="icon"><i class="fa fa-th"></i></span> <span>Dabs postés</span></a>
+            <a href={{ '/users/' . $user->id . '/posts'}}><span class="icon"><i class="fa fa-th"></i></span>
+              <span>Dabs postés</span>
+            </a>
           </li>
           <li class="{{ $page === 'followings' ? 'link is-active' : 'link' }}">
-            <a href={{ '/users/' . $user->id . '/followings'}}><span class="icon"><i class="fa fa-list"></i></span> <span>Dabbeurs suivis</span></a>
+            <a href={{ '/users/' . $user->id . '/followings'}}><span class="icon"><i class="fa fa-list"></i></span>
+              <span>Dabbeurs suivis</span>
+            </a>
           </li>
           <li class="{{ $page === 'likes' ? 'link is-active' : 'link' }}">
-            <a href={{ '/users/' . $user->id . '/likes'}}><span class="icon"><i class="fa fa-heart"></i></span> <span>Les réactions</span></a>
+            <a href={{ '/users/' . $user->id . '/likes'}}><span class="icon"><i class="fa fa-heart"></i></span>
+              <span>Les réactions</span>
+            </a>
           </li>
         </ul>
       </div>

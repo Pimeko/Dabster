@@ -19,8 +19,22 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
-    // Creates a user and generates a token
-    public function register(Request $request)
+    private function getUserByPseudo($pseudo)
+    {
+        return User::where('pseudo', $pseudo)->first();
+    }
+
+    private function GetUserById($userId)
+    {
+        return User::where('id', $userId)->first();
+    }
+
+    private function GetAuthUser()
+    {
+        return $this->GetUserById(Session::get("user_id"));
+    }
+
+    public function createUser(Request $request)
     {
         $newUser = new User;
 
@@ -32,43 +46,49 @@ class UsersController extends Controller
 
         $newUser->save();
 
+        return $newUser;
+    }
+
+    public function createAndStoreTokenFromUser($user)
+    {
         try
         {
-            $token = JWTAuth::fromUser($newUser);
-            Session::put('user_id', $newUser->id);
+            $token = JWTAuth::fromUser($user);
+            Session::put('user_id', $user->id);
             Session::put('token', $token);
-            return redirect('/');
-            //return response()->json(compact('token'));
+            return true;
         }
         catch (JWTException $e)
         {
-            return view('register'); 
-            //response()->json(['error' => 'could_not_create_token'], 500);
+            return false;
         }
+    }
+
+    // Creates a user and generates a token
+    public function register(Request $request)
+    {
+        $newUser = $this->createUser($request);
+
+        return redirect($this->createAndStoreTokenFromUser($newUser) ? '/' : 'register');
+    }
+
+    public function checkUserCredentials($user, $request)
+    {
+        return !empty($user) && Hash::check($request->password, $user->password);
     }
 
     // Check user's credentials and generates a token
     public function authenticate(Request $request)
     {
-        $user = User::where('pseudo', $request->pseudo)->first();
-        $errors = [];
-        try
+        $user = $this->getUserByPseudo($request->pseudo);
+
+        if (!$this->checkUserCredentials($user, $request))
         {
-            if (empty($user) || !Hash::check($request->password, $user->password))
-            {
-                array_push($errors, "Mauvais pseudo/mot de passe, veuillez réessayer");
-                return view('login', compact("errors"));
-            }
-            $token = JWTAuth::fromUser($user);
-            Session::put('user_id', $user->id);
-            Session::put('token', $token);
-            return redirect('/');
+            $error =  "Mauvais pseudo / mot de passe, veuillez réessayer";
+            return view('login', compact("error"));
         }
-        catch (JWTException $e)
-        {   
-            array_push($errors, "Erreur de token");
-            return view('login', compact("errors"));
-        }
+
+        return redirect($this->createAndStoreTokenFromUser($user) ? '/' : 'register');
     }
 
     public function logout() {
@@ -76,91 +96,76 @@ class UsersController extends Controller
         return redirect('/');
     }
 
-    private function GetAuthUser()
+    // Does A follow B ?
+    private function doesUserFollows($userA, $userB)
     {
-        return JWTAuth::setToken(Session::get("token"))->authenticate();
+        $res = false;
+
+        $followers = $userB->usersFollowers;
+        foreach ($followers as &$follower) {
+            if ($follower->id == $userA->id) {
+                $res = true;
+            }
+        }
+
+        return $res;
     }
 
-    private function GetUser($userId)
+    private function getProfileGeneralData($user)
     {
-        return User::where('id', $userId)->first();
+        $data = array();
+
+        $data["followingsCount"] =$user->usersFollowings->count();
+        $data["followersCount"] = $user->usersFollowers->count();
+        $data["likesCount"] = $user->likes->count();
+        $data["alreadyFollows"] = $this->doesUserFollows($this->GetAuthUser(), $user);
+
+        return $data;
     }
 
     public function profilePosts($userId) {
-        $user = $this->GetUser($userId);
-        $authUser = $this->GetAuthUser();
+        $user = $this->GetUserById($userId);
 
-        $followers = $user->usersFollowers;
-        $alreadyFollows = false;
-        foreach ($followers as &$follower) {
-            if ($follower->id == $authUser->id) {
-                $alreadyFollows = true;
-            }
-        }
-        $followingsCount = $user->usersFollowings->count();
-        $followersCount = $user->usersFollowers->count();
-        $likesCount = $user->likes->count();
+        $generalData = $this->getProfileGeneralData($user);
+        $page = 'posts';
+
         $content = $user->posts()
             ->with('user')
             ->withCount('comments')
             ->withCount('likes')
             ->orderByDesc('post_date')
             ->paginate(4);
-        $page = 'posts';
 
-        return view('profile.posts',
-            compact('user', 'alreadyFollows', 'followingsCount', 'page',
-                'followersCount', 'likesCount', 'page', 'content'));
+        return view('profile.posts', compact('user', 'generalData', 'page', 'content'));
     }
 
     public function profileLikes($userId) {
-        $user = $this->GetUser($userId);
-        $authUser = $this->GetAuthUser();
+        $user = $this->GetUserById($userId);
 
-        $followers = $user->usersFollowers;
-        $alreadyFollows = false;
-        foreach ($followers as &$follower) {
-            if ($follower->id == $authUser->id) {
-                $alreadyFollows = true;
-            }
-        }
-        $followingsCount = $user->usersFollowings->count();
-        $followersCount = $user->usersFollowers->count();
-        $likesCount = $user->likes->count();
+        $generalData = $this->getProfileGeneralData($user);
+        $page = 'likes';
+
         $content = UserLike::where('user_id', $user->id)
             ->with('user_posts')
             ->paginate(4);
-        $page = 'likes';
 
-        return view('profile.likes',
-            compact('user', 'alreadyFollows', 'followingsCount', 'page',
-                'followersCount', 'likesCount', 'page', 'content'));
+        return view('profile.likes', compact('user', 'generalData', 'page', 'content'));
     }
 
     public function profileFollowings($userId) {
-        $user = $this->GetUser($userId);
-        $authUser = $this->GetAuthUser();
+        $user = $this->GetUserById($userId);
 
-        $followers = $user->usersFollowers;
-        $alreadyFollows = false;
-        foreach ($followers as &$follower) {
-            if ($follower->id == $authUser->id) {
-                $alreadyFollows = true;
-            }
-        }
-        $followingsCount = $user->usersFollowings->count();
-        $followersCount = $user->usersFollowers->count();
-        $likesCount = $user->likes->count();
-        $content = $user->usersFollowings()->paginate(4);
+        $generalData = $this->getProfileGeneralData($user);
         $page = 'followings';
 
-        return view('profile.followings',
-            compact('user', 'alreadyFollows', 'followingsCount', 'page',
-                'followersCount', 'likesCount', 'page', 'content'));
+        $content = $user->usersFollowings()
+            ->paginate(4);
+
+        return view('profile.followings', compact('user', 'generalData', 'page', 'content'));
     }
 
     public function profileEdit($userId) {
-        $user = $this->GetUser($userId);
+        $user = $this->GetUserById($userId);
         return view('profile.edit', compact('user'));
     }
 
@@ -184,7 +189,7 @@ class UsersController extends Controller
 
     public function feed($userId)
     {
-        $user = $this->GetUser($userId);
+        $user = $this->GetUserById($userId);
         $followings = array();
         $usersFollowings = $user->usersFollowings;
         foreach ($usersFollowings as $following)

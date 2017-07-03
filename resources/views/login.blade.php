@@ -6,10 +6,8 @@
 <div class="hero is-light">
     <div class="container has-text-centered">
 
-        @if($errors)
-            @foreach ($errors as $error)
-                <div style="color: #D9534F">{{ $error }}</div>
-            @endforeach
+        @if($error)
+            <div style="color: #D9534F">{{ $error }}</div>
         @endif
 
         <h1 class="title">Connexion</h1>
