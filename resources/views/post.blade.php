@@ -15,7 +15,28 @@
                         <img src="{{$user_post->img_path}}" style="display:block; margin: 0 auto;"/>
                         <br/>
                         {{$user_post->description}}
-                        <br>
+                        <br/>
+                        <a href="{{'/users/' . $user_post->user->id}}">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        <img src="{{$user_post->user->pp}}" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">{{$user_post->user->pseudo}}</p>
+                                </div>
+                            </div>
+                        </a>
+                        <span style="float:right">
+                                <a href="#">
+                                    {{$user_post->comments_count}} commentaires
+                                </a>
+                                <a href="#">
+                                    {{$user_post->likes_count}} réactions
+                                </a>
+                                <br/>
+                            </span>
                         <small>
                             Le {{ Carbon\Carbon::parse($user_post->post_date)->format('d-m-Y à h:m:s') }}
                         </small>

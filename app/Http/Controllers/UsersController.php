@@ -128,7 +128,11 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->posts()->with('user')->paginate(4);
+        $content = $user->posts()
+            ->with('user')
+            ->withCount('comments')
+            ->withCount('likes')
+            ->paginate(4);
         $page = 'posts';
 
         return view('profile.posts',
@@ -150,7 +154,9 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = UserLike::where('user_id', $user->id)->with('user_posts')->paginate(4);
+        $content = UserLike::where('user_id', $user->id)
+            ->with('user_posts')
+            ->paginate(4);
         $page = 'likes';
 
         return view('profile.likes',
@@ -233,7 +239,12 @@ class UsersController extends Controller
         foreach ($usersFollowings as $following)
             array_push($followings, $following->id);
 
-        $posts = UserPost::whereIn('user_id', $followings)->with('user')->orderByDesc('post_date')->paginate(4);
+        $posts = UserPost::whereIn('user_id', $followings)
+            ->with('user')
+            ->withCount('comments')
+            ->withCount('likes')
+            ->orderByDesc('post_date')
+            ->paginate(4);
         $page = "feed";
 
         return view('home', compact('posts', 'page', 'user'));
@@ -247,6 +258,8 @@ class UsersController extends Controller
             ->groupBy('user_post_id')
             ->orderByDesc('total')
             ->with('user_posts')
+            ->withCount('comments')
+            ->withCount('likes')
             ->paginate(4);
         $page = "trending";
 
@@ -257,7 +270,10 @@ class UsersController extends Controller
     {
         $user = $this->GetUser($userId);
 
-        $posts = UserPost::orderByDesc('post_date')->paginate(4);
+        $posts = UserPost::orderByDesc('post_date')
+            ->withCount('comments')
+            ->withCount('likes')
+            ->paginate(4);
         $page = "recent";
 
         return view('home', compact('posts', 'page', 'user'));

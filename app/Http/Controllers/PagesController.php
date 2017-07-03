@@ -14,7 +14,8 @@ class PagesController extends Controller
             if (!$token)
             {
                 $posts = UserPost::orderByDesc('post_date')->with('user')->paginate(5);
-                return view('home', compact('posts'));
+                $page = "";
+                return view('home', compact('posts', 'page'));
             }
 
             $user = JWTAuth::setToken($token)->authenticate();

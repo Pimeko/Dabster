@@ -3,33 +3,49 @@
 @section('tabContent')
     <div>
         @foreach ($content as $like)
-            <a href={{"/posts/" . $like->user_posts->id}}>
+            @php ($post = $like->user_posts)
                 <div class="card">
                     <div class="card-content">
                         <div class="content">
-                            <img src="{{$like->user_posts->img_path}}" style="display:block; margin: 0 auto;"/>
+                            <a href={{"/posts/" . $post->id}}>
+                                <img src="{{$post->img_path}}" style="display:block; margin: 0 auto;"/>
+                            </a>
                             <br/>
-                            {{$like->user_posts->description}}
+                            {{$post->description}}
                             <br>
                         </div>
 
-                        <div class="media">
-                            <div class="media-left">
-                                <figure class="image is-48x48">
-                                    <img src="{{$like->user_posts->user->pp}}" alt="Image">
-                                </figure>
+                        <a href="{{'/users/' . $post->user->id}}">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        <img src="{{$post->user->pp}}" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">{{$post->user->pseudo}}</p>
+                                </div>
                             </div>
-                            <div class="media-content">
-                                <p class="title is-4">{{$like->user_posts->user->pseudo}}</p>
-                            </div>
-                        </div>
-                        <small>{{$like->user_posts->post_date}}</small>
+                        </a>
+                        <span style="float:right">
+                                <a href={{"/posts/" . $post->id}}>
+                                    {{$post->comments_count}} commentaires
+                                </a>
+                                <a href={{"/posts/" . $post->id}}>
+                                    {{$post->likes_count}} réactions
+                                </a>
+                                <br/>
+                            </span>
+                        <small>
+                            Le {{ Carbon\Carbon::parse($post->post_date)->format('d-m-Y à h:m:s') }}
+                        </small>
                     </div>
-                    <footer class="card-footer">
-                        <span class="card-footer-item">Réagir</span>
-                    </footer>
+                    <a href={{"/posts/" . $post->id}}>
+                        <footer class="card-footer">
+                            <span class="card-footer-item">Réagir</span>
+                        </footer>
+                    </a>
                 </div>
-            </a>
             <br/>
         @endforeach
     </div>

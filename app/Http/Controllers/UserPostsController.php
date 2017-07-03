@@ -49,7 +49,10 @@ class UserPostsController extends Controller
         $authUser = $isConnected ?
             JWTAuth::setToken(Session::get("token"))->authenticate() : null;
 
-        $user_post = UserPost::where('id', $postId)->first();
+        $user_post = UserPost::where('id', $postId)
+            ->withCount('comments')
+            ->withCount('likes')
+            ->first();
         $auth_like = $isConnected ?
             UserLike::where('user_id', $authUser->id)->where('user_post_id', $postId)->first() : null;
         $auth_like_id = $isConnected ?
