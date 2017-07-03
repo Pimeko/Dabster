@@ -127,7 +127,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->posts()->paginate(6);
+        $content = $user->posts()->with('user')->paginate(4);
         $page = 'posts';
 
         return view('profile.posts',
@@ -149,7 +149,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = UserLike::where('user_id', $user->id)->with('user_posts')->paginate(6);
+        $content = UserLike::where('user_id', $user->id)->with('user_posts')->paginate(4);
         $page = 'likes';
 
         return view('profile.likes',
@@ -171,7 +171,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->usersFollowings()->paginate(6);
+        $content = $user->usersFollowings()->paginate(4);
         $page = 'followings';
 
         return view('profile.followings',
@@ -193,7 +193,7 @@ class UsersController extends Controller
         $followingsCount = $user->usersFollowings->count();
         $followersCount = $user->usersFollowers->count();
         $likesCount = $user->likes->count();
-        $content = $user->usersFollowers()->paginate(6);
+        $content = $user->usersFollowers()->paginate(4);
         $page = 'followers';
 
         return view('profile.following',
@@ -227,8 +227,38 @@ class UsersController extends Controller
     public function feed($userId)
     {
         $user = $this->GetUser($userId);
-        $posts = $user->feed();
+        $followings = array();
+        $usersFollowings = $user->usersFollowings;
+        foreach ($usersFollowings as $following)
+            array_push($followings, $following->id);
 
-        return view('home', compact('posts'));
+        $posts = UserPost::whereIn('user_id', $followings)->with('user')->orderByDesc('post_date')->paginate(4);
+        $page = "feed";
+
+        return view('home', compact('posts', 'page', 'user'));
+    }
+
+    public function trending($userId)
+    {
+        $user = $this->GetUser($userId);
+
+        $posts = UserPost::with('user')->orderByDesc('post_date')->paginate(4);
+        $page = "trending";
+
+        return view('home', compact('posts', 'page', 'user'));
+    }
+
+    public function recent($userId)
+    {
+        $user = $this->GetUser($userId);
+        $followings = array();
+        $usersFollowings = $user->usersFollowings;
+        foreach ($usersFollowings as $following)
+            array_push($followings, $following->id);
+
+        $posts = UserPost::whereIn('user_id', $followings)->with('user')->orderByDesc('post_date')->paginate(4);
+        $page = "recent";
+
+        return view('home', compact('posts', 'page', 'user'));
     }
 }

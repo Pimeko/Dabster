@@ -13,7 +13,7 @@ class PagesController extends Controller
             $token = Session::get("token");
             if (!$token)
             {
-                $posts = UserPost::all();
+                $posts = UserPost::orderByDesc('post_date')->with('user')->paginate(5);
                 return view('home', compact('posts'));
             }
 

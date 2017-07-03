@@ -32,7 +32,8 @@ class User extends Authenticatable
 
     public function feed()
     {
-        return $this->belongsToMany(User::class, 'user_user', 'follower_id', 'followed_id');
+        return $this->belongsToMany(User::class, 'user_user', 'follower_id', 'followed_id')
+            ->with('posts');
     }
 
     protected $hidden = [

@@ -2,13 +2,39 @@
 
 @section('title', 'Accueil')
 
-@section('content')
-<div class="flex-center position-ref full-height">
-    <div class="content">
-        <div class="title m-b-md">
-            Feed
-        </div>
+@section('includes')
+    <link href="/css/profile.css" rel="stylesheet">
+@endsection
 
+@section('content')
+
+    <div class="container profile">
+        <div class="profile-options">
+            <div class="tabs is-fullwidth">
+                <ul id="myTabs">
+                    <li class="{{ $page === 'feed' ? 'link is-active' : 'link' }}">
+                        <a href={{ '/users/' . $user->id . '/feed'}}>
+                            <span class="icon"><i class="fa fa-home"></i></span>
+                            <span>Fil d'actualité</span>
+                        </a>
+                    </li>
+                    <li class="{{ $page === 'trending' ? 'link is-active' : 'link' }}">
+                        <a href={{ '/users/' . $user->id . '/trending'}}>
+                            <span class="icon"><i class="fa fa-heartbeat"></i></span>
+                            <span>Tendance</span>
+                        </a>
+                    </li>
+                    <li class="{{ $page === 'recent' ? 'link is-active' : 'link' }}">
+                        <a href={{ '/users/' . $user->id . '/recent'}}>
+                            <span class="icon"><i class="fa fa-clock-o"></i></span>
+                            <span>Les plus récents</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content">
             @foreach ($posts as $post)
                 <a href={{"/posts/" . $post->id}}>
                     <div class="card">
@@ -18,11 +44,23 @@
                                 <br/>
                                 {{$post->description}}
                                 <br>
-                                <small>
-                                    Le {{ Carbon\Carbon::parse($post->post_date)->format('d-m-Y à h:m:s') }}
-                                </small>
                             </div>
+
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        <img src="{{$post->user->pp}}" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">{{$post->user->pseudo}}</p>
+                                </div>
+                            </div>
+                            <small>
+                                Le {{ Carbon\Carbon::parse($post->post_date)->format('d-m-Y à h:m:s') }}
+                            </small>
                         </div>
+
                         <footer class="card-footer">
                             <span class="card-footer-item">Réagir</span>
                         </footer>
@@ -33,5 +71,4 @@
             @endforeach
 
     </div>
-</div>
 @endsection

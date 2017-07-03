@@ -11,8 +11,19 @@
                             <br/>
                             {{$like->user_posts->description}}
                             <br>
-                            <small>{{$like->user_posts->post_date}}</small>
                         </div>
+
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-48x48">
+                                    <img src="{{$like->user_posts->user->pp}}" alt="Image">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4">{{$like->user_posts->user->pseudo}}</p>
+                            </div>
+                        </div>
+                        <small>{{$like->user_posts->post_date}}</small>
                     </div>
                     <footer class="card-footer">
                         <span class="card-footer-item">Réagir</span>

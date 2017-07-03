@@ -10,6 +10,6 @@ class UserLike extends Model
 
     public function user_posts()
     {
-        return $this->belongsTo(UserPost::class, 'user_post_id', 'id');
+        return $this->belongsTo(UserPost::class, 'user_post_id', 'id')->with('user');
     }
 }

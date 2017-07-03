@@ -46,6 +46,8 @@ Route::group(['middleware' => 'validjwt'], function () {
         Route::get('users/{userId}/edit',           'UsersController@profileEdit');
         Route::put('users/{userId}/edit',           'UsersController@updateProfile');
         Route::get('users/{userId}/feed',           'UsersController@feed');
+        Route::get('users/{userId}/trending',       'UsersController@trending');
+        Route::get('users/{userId}/recent',         'UsersController@recent');
     });
 });
 
