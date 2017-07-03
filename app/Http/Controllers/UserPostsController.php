@@ -16,9 +16,19 @@ use DB;
 
 class UserPostsController extends Controller
 {
+    private function GetAuthUser()
+    {
+        return $this->GetUserById(Session::get("user_id"));
+    }
+
+    private function GetUserById($userId)
+    {
+        return User::where('id', $userId)->first();
+    }
+
     public function addPost($userId, Request $request)
     {
-        $user = User::where('id', $userId)->first();
+        $user = $this->GetUserById($userId);
         $newUserPost = new UserPost;
 
         $newUserPost->user_id = $user->id;
@@ -76,11 +86,6 @@ class UserPostsController extends Controller
             $post->delete();
         }
         return redirect('/');
-    }
-
-    private function GetAuthUser()
-    {
-        return JWTAuth::setToken(Session::get("token"))->authenticate();
     }
 
     public function trending()

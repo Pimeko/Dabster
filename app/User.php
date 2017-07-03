@@ -18,7 +18,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'user_user', 'follower_id', 'followed_id');
     }
-    
 
     public function usersFollowers()
     {
@@ -28,12 +27,6 @@ class User extends Authenticatable
     public function likes()
     {
         return $this->hasMany(UserLike::class);
-    }
-
-    public function feed()
-    {
-        return $this->belongsToMany(User::class, 'user_user', 'follower_id', 'followed_id')
-            ->with('posts');
     }
 
     protected $hidden = [
