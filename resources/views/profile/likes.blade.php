@@ -49,4 +49,5 @@
             <br/>
         @endforeach
     </div>
+    {{ $content->links() }}
 @endsection

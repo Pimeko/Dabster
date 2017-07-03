@@ -258,8 +258,6 @@ class UsersController extends Controller
             ->groupBy('user_post_id')
             ->orderByDesc('total')
             ->with('user_posts')
-            ->withCount('comments')
-            ->withCount('likes')
             ->paginate(4);
         $page = "trending";
 

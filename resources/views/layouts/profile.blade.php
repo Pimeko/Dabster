@@ -67,6 +67,7 @@
         </div>
       </div>
     </div>
+    <br/>
     <div class="profile-options">
       <div class="tabs is-fullwidth">
         <ul id="myTabs">
