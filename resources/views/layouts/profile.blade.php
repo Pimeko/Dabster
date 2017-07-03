@@ -37,7 +37,7 @@
             @endif
           </p>
           <p class="tagline">
-            @if ($user->description === "")
+            @if (Session::get('user_id') === $user->id && $user->description === "")
               Editez votre profil pour ajouter une description.
             @else
               {{ $user->description  }}

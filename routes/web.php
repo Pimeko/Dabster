@@ -47,11 +47,13 @@ Route::group(['middleware' => 'validjwt'], function () {
     Route::delete('/comments/{commentId}',      'UserCommentsController@remove');
     Route::post('/users/{userId}/followings',   'UserUserController@follow'); // user follows "followed"
 
+    Route::get('trending',                      'UserPostsController@trending');
+    Route::get('recent',                        'UserPostsController@recent');
+    Route::get('random',                        'UserPostsController@random');
+
     Route::group(['middleware' => 'correctuser'], function () {
         Route::get('users/{userId}/edit',           'UsersController@profileEdit');
         Route::put('users/{userId}/edit',           'UsersController@updateProfile');
         Route::get('users/{userId}/feed',           'UsersController@feed');
-        Route::get('users/{userId}/trending',       'UsersController@trending');
-        Route::get('users/{userId}/recent',         'UsersController@recent');
     });
 });

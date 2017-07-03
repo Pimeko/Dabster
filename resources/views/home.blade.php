@@ -19,15 +19,21 @@
                         </a>
                     </li>
                     <li class="{{ $page === 'trending' ? 'link is-active' : 'link' }}">
-                        <a href={{ '/users/' . $user->id . '/trending'}}>
-                            <span class="icon"><i class="fa fa-heartbeat"></i></span>
+                        <a href={{ '/trending'}}>
+                            <span class="icon"><i class="fa fa-fire"></i></span>
                             <span>Dabs Tendances</span>
                         </a>
                     </li>
                     <li class="{{ $page === 'recent' ? 'link is-active' : 'link' }}">
-                        <a href={{ '/users/' . $user->id . '/recent'}}>
+                        <a href={{ '/recent'}}>
                             <span class="icon"><i class="fa fa-clock-o"></i></span>
                             <span>Les plus récents</span>
+                        </a>
+                    </li>
+                    <li class="{{ $page === 'random' ? 'link is-active' : 'link' }}">
+                        <a href={{ '/random'}}>
+                            <span class="icon"><i class="fa fa-question"></i></span>
+                            <span>Aléatoire</span>
                         </a>
                     </li>
                 </ul>

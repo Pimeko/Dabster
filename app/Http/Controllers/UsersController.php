@@ -16,7 +16,6 @@ use Image;
 use Storage;
 use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
-use DB;
 
 class UsersController extends Controller
 {
@@ -246,33 +245,6 @@ class UsersController extends Controller
             ->orderByDesc('post_date')
             ->paginate(4);
         $page = "feed";
-
-        return view('home', compact('posts', 'page', 'user'));
-    }
-
-    public function trending($userId)
-    {
-        $user = $this->GetUser($userId);
-
-        $posts = UserLike::select('user_post_id', DB::raw('count(*) as total'))
-            ->groupBy('user_post_id')
-            ->orderByDesc('total')
-            ->with('user_posts')
-            ->paginate(4);
-        $page = "trending";
-
-        return view('home', compact('posts', 'page', 'user'));
-    }
-
-    public function recent($userId)
-    {
-        $user = $this->GetUser($userId);
-
-        $posts = UserPost::orderByDesc('post_date')
-            ->withCount('comments')
-            ->withCount('likes')
-            ->paginate(4);
-        $page = "recent";
 
         return view('home', compact('posts', 'page', 'user'));
     }

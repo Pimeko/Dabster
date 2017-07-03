@@ -12,6 +12,7 @@ use JWTFactory;
 use Session;
 use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
+use DB;
 
 class UserPostsController extends Controller
 {
@@ -79,5 +80,47 @@ class UserPostsController extends Controller
             $post->delete();
         }
         return redirect('/');
+    }
+
+    private function GetAuthUser()
+    {
+        return JWTAuth::setToken(Session::get("token"))->authenticate();
+    }
+
+    public function trending()
+    {
+        $user = $this->GetAuthUser();
+
+        $posts = UserLike::select('user_post_id', DB::raw('count(*) as total'))
+            ->groupBy('user_post_id')
+            ->orderByDesc('total')
+            ->with('user_posts')
+            ->paginate(4);
+        $page = "trending";
+
+        return view('home', compact('posts', 'page', 'user'));
+    }
+
+    public function recent()
+    {
+        $user = $this->GetAuthUser();
+
+        $posts = UserPost::orderByDesc('post_date')
+            ->withCount('comments')
+            ->withCount('likes')
+            ->paginate(4);
+        $page = "recent";
+
+        return view('home', compact('posts', 'page', 'user'));
+    }
+
+    public function random()
+    {
+        $user = $this->GetAuthUser();
+
+        $posts = UserPost::inRandomOrder()->paginate(4);
+
+        $page = "random";
+        return view('home', compact('posts', 'page', 'user'));
     }
 }
