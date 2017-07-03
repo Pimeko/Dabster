@@ -38,6 +38,7 @@
     <br/>
     <div class="content">
             @foreach ($posts as $post)
+                @php ($post = $page === 'trending' ? $post->user_posts : $post)
                 <a href={{"/posts/" . $post->id}}>
                     <div class="card">
                         <div class="card-content">
