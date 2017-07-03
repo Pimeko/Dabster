@@ -41,7 +41,7 @@ Route::group(['middleware' => 'validjwt'], function () {
     Route::get('users/{userId}/followers',      'UsersController@profileFollowers');
 
     // posts
-    Route::post('/posts/{post}/likes',          'UserLikesController@changeLike');
+    Route::post('/posts/{postId}/likes',        'UserLikesController@changeLike');
     Route::post('/posts/{post}/comments',       'UserCommentsController@add');
     Route::delete('/posts/{postId}',            'UserPostsController@remove');
     Route::delete('/comments/{commentId}',      'UserCommentsController@remove');

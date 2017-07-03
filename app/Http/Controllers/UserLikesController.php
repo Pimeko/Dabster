@@ -10,24 +10,29 @@ use Session;
 
 class UserLikesController extends Controller
 {
-    public function changeLike(UserPost $post, Request $request)
+    public function changeLike($postId, Request $request)
     {
-        $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
-        $currLike = UserLike::where('user_id', $authUser->id)->where('user_post_id', $post->id)->first();
-        if ($currLike)
+        $post = UserPost::where('id', $postId);
+        if ($post)
         {
-            if ($currLike->type == $request->like_id)
-                $currLike->delete();
-            else
+            $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
+            $currLike = UserLike::where('user_id', $authUser->id)->where('user_post_id', $post->id)->first();
+            if ($currLike)
             {
-                $currLike->type = $request->like_id;
-                $currLike->save();
+                if ($currLike->type == $request->like_id)
+                    $currLike->delete();
+                else
+                {
+                    $currLike->type = $request->like_id;
+                    $currLike->save();
+                }
             }
+            else
+                $this->postLike($post, $request, $authUser);
+            return redirect('/posts/' . $post->id);
         }
-        else
-            $this->postLike($post, $request, $authUser);
 
-        return redirect('/posts/' . $post->id);
+        return redirect('/');
     }
 
     public function postLike(UserPost $post, Request $request, $authUser)

@@ -103,18 +103,13 @@ class UsersController extends Controller
         return redirect('/');
     }
 
-    private function GetUser($userId)
-    {
-        return User::where('id', $userId)->first();
-    }
-
     private function GetAuthUser()
     {
         return JWTAuth::setToken(Session::get("token"))->authenticate();
     }
 
     public function profilePosts(Request $request, $userId) {
-        $user = $this->GetUser($userId);
+        $user = $this->GetAuthUser();
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
@@ -140,7 +135,7 @@ class UsersController extends Controller
     }
 
     public function profileLikes(Request $request, $userId) {
-        $user = $this->GetUser($userId);
+        $user = $this->GetAuthUser();
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
@@ -164,7 +159,7 @@ class UsersController extends Controller
     }
 
     public function profileFollowings(Request $request, $userId) {
-        $user = $this->GetUser($userId);
+        $user = $this->GetAuthUser();
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
@@ -186,7 +181,7 @@ class UsersController extends Controller
     }
 
     public function profileFollowers(Request $request, $userId) {
-        $user = $this->GetUser($userId);
+        $user = $this->GetAuthUser();
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
@@ -208,12 +203,12 @@ class UsersController extends Controller
     }
 
     public function profileEdit(Request $request, $userId) {
-        $user = $this->GetUser($userId);
+        $user = $this->GetAuthUser();
         return view('profile.edit', compact('user'));
     }
 
     public function updateProfile(Request $request, $userId) {
-        $user = $this->GetUser($userId);
+        $user = $this->GetAuthUser();
         $user->description = $request->description;
 
         if ($request->pp)
@@ -230,9 +225,9 @@ class UsersController extends Controller
         return redirect('/users/' . $userId);
     }
 
-    public function feed($userId)
+    public function feed()
     {
-        $user = $this->GetUser($userId);
+        $user = $this->GetAuthUser();
         $followings = array();
         $usersFollowings = $user->usersFollowings;
         foreach ($usersFollowings as $following)
