@@ -95,5 +95,5 @@
       //e.preventDefault()
       $(this).tab('show')
     })
-  </sript
+  </script>
 @endsection
