@@ -72,8 +72,7 @@ class UsersController extends Controller
     }
 
     public function logout() {
-        Session::remove('token');
-        Session::remove('user_id');
+        Session::flush();
         return redirect('/');
     }
 
@@ -82,8 +81,13 @@ class UsersController extends Controller
         return JWTAuth::setToken(Session::get("token"))->authenticate();
     }
 
-    public function profilePosts(Request $request, $userId) {
-        $user = $this->GetAuthUser();
+    private function GetUser($userId)
+    {
+        return User::where('id', $userId)->first();
+    }
+
+    public function profilePosts($userId) {
+        $user = $this->GetUser($userId);
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
@@ -108,8 +112,8 @@ class UsersController extends Controller
                 'followersCount', 'likesCount', 'page', 'content'));
     }
 
-    public function profileLikes(Request $request, $userId) {
-        $user = $this->GetAuthUser();
+    public function profileLikes($userId) {
+        $user = $this->GetUser($userId);
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
@@ -132,8 +136,8 @@ class UsersController extends Controller
                 'followersCount', 'likesCount', 'page', 'content'));
     }
 
-    public function profileFollowings(Request $request, $userId) {
-        $user = $this->GetAuthUser();
+    public function profileFollowings($userId) {
+        $user = $this->GetUser($userId);
         $authUser = $this->GetAuthUser();
 
         $followers = $user->usersFollowers;
@@ -154,30 +158,8 @@ class UsersController extends Controller
                 'followersCount', 'likesCount', 'page', 'content'));
     }
 
-    public function profileFollowers(Request $request, $userId) {
-        $user = $this->GetAuthUser();
-        $authUser = $this->GetAuthUser();
-
-        $followers = $user->usersFollowers;
-        $alreadyFollows = false;
-
-        foreach ($followers as $follower)
-            if ($follower->id == $authUser->id)
-                $alreadyFollows = true;
-
-        $followingsCount = $user->usersFollowings->count();
-        $followersCount = $user->usersFollowers->count();
-        $likesCount = $user->likes->count();
-        $content = $user->usersFollowers()->paginate(4);
-        $page = 'followers';
-
-        return view('profile.following',
-            compact('user', 'alreadyFollows', 'followingsCount', 'page',
-                'followersCount', 'likesCount', 'page', 'content'));
-    }
-
-    public function profileEdit(Request $request, $userId) {
-        $user = $this->GetAuthUser();
+    public function profileEdit($userId) {
+        $user = $this->GetUser($userId);
         return view('profile.edit', compact('user'));
     }
 
@@ -199,9 +181,9 @@ class UsersController extends Controller
         return redirect('/users/' . $userId);
     }
 
-    public function feed()
+    public function feed($userId)
     {
-        $user = $this->GetAuthUser();
+        $user = $this->GetUser($userId);
         $followings = array();
         $usersFollowings = $user->usersFollowings;
         foreach ($usersFollowings as $following)
