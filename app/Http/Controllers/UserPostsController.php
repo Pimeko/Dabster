@@ -16,13 +16,9 @@ use DB;
 
 class UserPostsController extends Controller
 {
-    public function getPosts(User $user)
+    public function addPost($userId, Request $request)
     {
-        return $user->posts;
-    }
-
-    public function addPost(User $user, Request $request)
-    {
+        $user = User::where('id', $userId)->first();
         $newUserPost = new UserPost;
 
         $newUserPost->user_id = $user->id;

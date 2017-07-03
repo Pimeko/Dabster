@@ -16,7 +16,7 @@ class ValidJWT
           if (!$token)
           {
               Session::flush();
-              $message = "You must be connected to access this page.";
+              $message = "Vous devez être connecté pour accéder à cette page.";
               return new Response(view('error', compact('message')));
           }
 
@@ -24,7 +24,7 @@ class ValidJWT
           if (!$user)
           {
               Session::flush();
-              $message = "Invalid token : please connect again.";
+              $message = "Jeton invalide : reconnectez-vous.";
               return new Response(view('error', compact('message')));
           }
 
@@ -32,17 +32,17 @@ class ValidJWT
 
       } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
           Session::flush();
-          $message = "Token expired : please connect again.";
+          $message = "Jeton expiré : reconnectez-vous.";
           return view("error", compact('message'));
 
       } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
           Session::flush();
-          $message = "Invalid token : please connect again.";
+          $message = "Jeton invalide : reconnectez-vous.";
           return view("error", compact('message'));
 
       } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
           Session::flush();
-          $message = "Invalid token : please connect again.";
+          $message = "Jeton invalide : reconnectez-vous.";
           return view("error", compact('message'));
       }
 

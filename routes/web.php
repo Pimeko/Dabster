@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\UsersController;
 
 Route::get('/', 'PagesController@home');
+Route::get('posts/{postId}', 'UserPostsController@get');
 
 Route::group(['middleware' => 'notconnected'], function () {
     Route::get('login', function () {
@@ -26,9 +27,6 @@ Route::group(['middleware' => 'notconnected'], function () {
     });
     Route::post('register', 'UsersController@register');
 });
-
-
-Route::get('posts/{postId}', 'UserPostsController@get');
 
 Route::group(['middleware' => 'validjwt'], function () {
     Route::get('logout', 'UsersController@logout');
@@ -47,6 +45,7 @@ Route::group(['middleware' => 'validjwt'], function () {
     Route::delete('/comments/{commentId}',      'UserCommentsController@remove');
     Route::post('/users/{userId}/followings',   'UserUserController@follow'); // user follows "followed"
 
+    // feeds
     Route::get('trending',                      'UserPostsController@trending');
     Route::get('recent',                        'UserPostsController@recent');
     Route::get('random',                        'UserPostsController@random');
@@ -55,5 +54,6 @@ Route::group(['middleware' => 'validjwt'], function () {
         Route::get('users/{userId}/edit',           'UsersController@profileEdit');
         Route::put('users/{userId}/edit',           'UsersController@updateProfile');
         Route::get('users/{userId}/feed',           'UsersController@feed');
+        Route::post('/users/{userId}/posts',        'UserPostsController@addPost');
     });
 });

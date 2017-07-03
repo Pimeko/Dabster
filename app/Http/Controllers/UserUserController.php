@@ -12,29 +12,6 @@ use JWTAuth;
 
 class UserUserController extends Controller
 {
-  public function showFollowings(User $user)
-  {
-    return $user->usersFollowings;
-  }
-
-  public function showFollowers(User $user)
-  {
-    $req = $user->usersFollowers;
-
-    $data = json_decode($req, TRUE);
-    $res = array();
-
-    foreach ($data as $user)
-    {
-      $tmp = User::where('id', $user['id'])->first()->usersFollowers;
-      $user['followers'] = $tmp;
-
-      array_push($res, $user);
-    }
-
-    return json_encode($res);
-  }
-
   public function follow($userId, Request $request)
   {
       $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();

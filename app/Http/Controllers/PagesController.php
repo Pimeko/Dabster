@@ -44,6 +44,5 @@ class PagesController extends Controller
             Session::flush();
             return redirect('/');
         }
-
     }
 }

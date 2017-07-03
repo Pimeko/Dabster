@@ -19,11 +19,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
-    public function getUsers()
-    {
-        return User::all();
-    }
-
     // Creates a user and generates a token
     public function register(Request $request)
     {
@@ -71,27 +66,6 @@ class UsersController extends Controller
         }
         catch (JWTException $e)
         {   
-            array_push($errors, "Erreur de token");
-            return view('login', compact("errors"));
-        }
-    }
-
-    public function authenticateAPI(Request $request)
-    {
-        $user = User::where('pseudo', $request->pseudo)->first();
-        $errors = [];
-        try
-        {
-            if (empty($user) || !Hash::check($request->password, $user->password))
-            {
-                array_push($errors, "Mauvais pseudo/mot de passe, veuillez réessayer");
-                return view('login', compact("errors"));
-            }
-            $token = JWTAuth::fromUser($user);
-            return $token;
-        }
-        catch (JWTException $e)
-        {
             array_push($errors, "Erreur de token");
             return view('login', compact("errors"));
         }
