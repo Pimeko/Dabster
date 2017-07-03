@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-
+    @if (Session::has('token'))
     <div class="container profile">
         <div class="profile-options">
             <div class="tabs is-fullwidth">
@@ -21,7 +21,7 @@
                     <li class="{{ $page === 'trending' ? 'link is-active' : 'link' }}">
                         <a href={{ '/users/' . $user->id . '/trending'}}>
                             <span class="icon"><i class="fa fa-heartbeat"></i></span>
-                            <span>Tendance</span>
+                            <span>Dabs Tendances</span>
                         </a>
                     </li>
                     <li class="{{ $page === 'recent' ? 'link is-active' : 'link' }}">
@@ -34,6 +34,8 @@
             </div>
         </div>
     </div>
+    @endif
+    <br/>
     <div class="content">
             @foreach ($posts as $post)
                 <a href={{"/posts/" . $post->id}}>
@@ -71,4 +73,5 @@
             @endforeach
 
     </div>
+    {{ $posts->links() }}
 @endsection

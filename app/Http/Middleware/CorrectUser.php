@@ -5,27 +5,17 @@ namespace App\Http\Middleware;
 use Closure;
 use JWTAuth;
 use Session;
+use Illuminate\Http\Response;
 
 class CorrectUser
 {
     public function handle($request, Closure $next)
     {
-      try {
-          $user = JWTAuth::setToken(Session::get("token"))->authenticate();
+      $user = JWTAuth::setToken(Session::get("token"))->authenticate();
 
-          if ($user->id != $request->route('userId')) {
-              return response()->json(['wrong_user'], 403);
-          }
-
-      } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-          return response()->json(['token_expired'], $e->getStatusCode());
-
-      } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-          return response()->json(['token_invalid'], $e->getStatusCode());
-
-      } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-          return response()->json(['token_absent'], $e->getStatusCode());
-
+      if ($user->id != $request->route('userId')) {
+          $message = "You do not have access to this page.";
+          return new Response(view('error', compact('message')));
       }
 
       return $next($request);

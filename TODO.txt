@@ -14,3 +14,5 @@ faire des tests et des tests et des tests
 à terme, tout virer dans /api
 
 page d'erreur custom
+
+faire qu'on peut pas voir "réagir", le textarea de message etc.. quand on est pas co

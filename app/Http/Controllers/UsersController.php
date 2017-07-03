@@ -242,7 +242,8 @@ class UsersController extends Controller
     {
         $user = $this->GetUser($userId);
 
-        $posts = UserPost::with('user')->orderByDesc('post_date')->paginate(4);
+        $posts = UserLike::groupBy('user_post_id')
+            ->get();
         $page = "trending";
 
         return view('home', compact('posts', 'page', 'user'));

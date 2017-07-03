@@ -20,6 +20,11 @@ Route::group(['middleware' => 'notconnected'], function () {
         return view('login');
     });
     Route::post('login', 'UsersController@authenticate');
+
+    Route::get('register', function () {
+        return view('register');
+    });
+    Route::post('register', 'UsersController@register');
 });
 
 
@@ -50,8 +55,3 @@ Route::group(['middleware' => 'validjwt'], function () {
         Route::get('users/{userId}/recent',         'UsersController@recent');
     });
 });
-
-Route::get('register', function () {
-    return view('register');
-});
-Route::post('register', 'UsersController@register');
