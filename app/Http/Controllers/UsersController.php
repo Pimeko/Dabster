@@ -22,6 +22,9 @@ class UsersController extends Controller
 {
     public function createUser(Request $request)
     {
+        if (User::where('pseudo', $request->pseudo)->first()
+            || User::where('email', $request->email)->first())
+            return null;
         $newUser = new User;
 
         $newUser->pseudo = $request->pseudo;
@@ -54,8 +57,13 @@ class UsersController extends Controller
     public function register(Request $request)
     {
         $newUser = $this->createUser($request);
+        if (!$newUser || !$this->createAndStoreTokenFromUser($newUser))
+        {
+            $error = "Il y a déjà un utilisateur avec ce pseudo ou cette adresse mail.";
+            return view('register', compact("error"));
+        }
 
-        return redirect($this->createAndStoreTokenFromUser($newUser) ? '/' : 'register');
+        return redirect('/');
     }
 
     public function checkUserCredentials($user, $request)
@@ -82,21 +90,6 @@ class UsersController extends Controller
         return redirect('/');
     }
 
-    // Does A follow B ?
-    private function doesUserFollows($userA, $userB)
-    {
-        $res = false;
-
-        $followers = $userB->usersFollowers;
-        foreach ($followers as &$follower) {
-            if ($follower->id == $userA->id) {
-                $res = true;
-            }
-        }
-
-        return $res;
-    }
-
     private function getProfileGeneralData($user)
     {
         $data = array();
@@ -104,7 +97,7 @@ class UsersController extends Controller
         $data["followingsCount"] =$user->usersFollowings->count();
         $data["followersCount"] = $user->usersFollowers->count();
         $data["likesCount"] = $user->likes->count();
-        $data["alreadyFollows"] = $this->doesUserFollows(UserHelper::GetAuthUser(), $user);
+        $data["alreadyFollows"] = UserHelper::doesUserFollows(UserHelper::GetAuthUser(), $user);
 
         return $data;
     }

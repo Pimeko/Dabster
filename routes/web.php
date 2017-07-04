@@ -17,15 +17,10 @@ Route::get('/', 'PagesController@home');
 Route::get('posts/{postId}', 'UserPostsController@get');
 
 Route::group(['middleware' => 'notconnected'], function () {
-    Route::get('login', function () {
-        $error = null;
-        return view('login', compact('error'));
-    });
+    Route::get('login', 'PagesController@login');
     Route::post('login', 'UsersController@authenticate');
 
-    Route::get('register', function () {
-        return view('register');
-    });
+    Route::get('register', 'PagesController@register');
     Route::post('register', 'UsersController@register');
 });
 

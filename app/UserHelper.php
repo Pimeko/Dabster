@@ -22,4 +22,19 @@ class UserHelper
             return null;
         return UserHelper::GetUserById(Session::get("user_id"));
     }
+
+    // Does A follow B ?
+    public static function doesUserFollows($userA, $userB)
+    {
+        $res = false;
+
+        $followers = $userB->usersFollowers;
+        foreach ($followers as &$follower) {
+            if ($follower->id == $userA->id) {
+                $res = true;
+            }
+        }
+
+        return $res;
+    }
 }

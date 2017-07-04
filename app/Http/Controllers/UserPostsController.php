@@ -46,10 +46,9 @@ class UserPostsController extends Controller
         $auth_like_id = -1;
         if (Session::has("token"))
         {
-            $auth_like_id = UserLike::where('user_id', $this->GetAuthUser()->id)
+            $auth_like = UserLike::where('user_id', UserHelper::GetAuthUser()->id)
                 ->where('user_post_id', $postId)->first();
-            if (!$auth_like_id)
-                $auth_like_id = -1;
+            $auth_like_id = $auth_like ? $auth_like->type : -1;
         }
 
         $user_post = UserPost::where('id', $postId)
@@ -136,6 +135,8 @@ class UserPostsController extends Controller
             $file->storeAs($user->id, $file->getClientOriginalName());
             $fullPath = '/img/' . $user->id . '/' . $file->getClientOriginalName();
         }
+        else
+            return redirect('upload');
         $user->save();
 
         $newUserPost->img_path = $fullPath;

@@ -7,6 +7,10 @@
     <div class="container has-text-centered">
         <h1 class="title">S'inscrire</h1>
 
+        @if($error)
+            <div style="color: #D9534F">{{ $error }}</div>
+        @endif
+
         
         {!! Form::open(['style' => 'width:50%;margin:0 auto;']) !!}
             <div class="field">

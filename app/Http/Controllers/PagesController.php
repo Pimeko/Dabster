@@ -45,4 +45,16 @@ class PagesController extends Controller
             return redirect('/');
         }
     }
+
+    public function login()
+    {
+        $error = null;
+        return view('login', compact('error'));
+    }
+
+    public function register()
+    {
+        $error = null;
+        return view('register', compact('error'));
+    }
 }
