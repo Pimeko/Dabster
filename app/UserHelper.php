@@ -18,6 +18,8 @@ class UserHelper
 
     public static function GetAuthUser()
     {
+        if (!Session::has('user_id'))
+            return null;
         return UserHelper::GetUserById(Session::get("user_id"));
     }
 }

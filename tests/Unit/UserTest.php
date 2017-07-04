@@ -22,6 +22,17 @@ class UserTest extends TestCase
         $userCreated->delete();
     }
 
+    public function test_get_user_by_pseudo_is_null()
+    {
+        $userCreated = factory(User::class)->create();
+        $pseudo = $userCreated->name;
+        $userCreated->delete();
+
+        $user = UserHelper::getUserByPseudo($pseudo);
+        $this->assertTrue($user == null);
+    }
+
+
     public function test_get_user_by_id_has_good_fields()
     {
         $userCreated = factory(User::class)->create();
@@ -32,5 +43,38 @@ class UserTest extends TestCase
         $this->assertTrue($user->email == $userCreated->email);
 
         $userCreated->delete();
+    }
+
+    public function test_get_user_by_id_is_null()
+    {
+        $userCreated = factory(User::class)->create();
+        $id = $userCreated->id;
+        $userCreated->delete();
+
+        $user = UserHelper::getUserById($id);
+        $this->assertTrue($user == null);
+    }
+
+    public function test_get_auth_user_has_good_fields()
+    {
+        $userCreated = factory(User::class)->create();
+
+        session(['user_id' => $userCreated->id]);
+        $user = UserHelper::GetAuthUser();
+        $this->assertTrue($user->id == $userCreated->id);
+        session()->forget('user_id');
+
+        $userCreated->delete();
+    }
+
+    public function test_get_auth_user_is_null()
+    {
+        $userCreated = factory(User::class)->create();
+        session(['user_id' => $userCreated->id]);
+        session()->forget('user_id');
+        $userCreated->delete();
+
+        $user = UserHelper::GetAuthUser();
+        $this->assertTrue($user == null);
     }
 }
