@@ -10,25 +10,16 @@ use App\UserLike;
 use JWTAuth;
 use JWTFactory;
 use Session;
+use App\UserHelper;
 use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
 use DB;
 
 class UserPostsController extends Controller
 {
-    private function GetAuthUser()
-    {
-        return $this->GetUserById(Session::get("user_id"));
-    }
-
-    private function GetUserById($userId)
-    {
-        return User::where('id', $userId)->first();
-    }
-
     public function addPost($userId, Request $request)
     {
-        $user = $this->GetUserById($userId);
+        $user = UserHelper::GetUserById($userId);
         $newUserPost = new UserPost;
 
         $newUserPost->user_id = $user->id;
@@ -52,18 +43,19 @@ class UserPostsController extends Controller
 
     public function get($postId)
     {
-        $isConnected = Session::has("token");
-        $authUser = $isConnected ?
-            JWTAuth::setToken(Session::get("token"))->authenticate() : null;
+        $auth_like_id = -1;
+        if (Session::has("token"))
+        {
+            $auth_like_id = UserLike::where('user_id', $this->GetAuthUser()->id)
+                ->where('user_post_id', $postId)->first();
+            if (!$auth_like_id)
+                $auth_like_id = -1;
+        }
 
         $user_post = UserPost::where('id', $postId)
             ->withCount('comments')
             ->withCount('likes')
             ->first();
-        $auth_like = $isConnected ?
-            UserLike::where('user_id', $authUser->id)->where('user_post_id', $postId)->first() : null;
-        $auth_like_id = $isConnected ?
-            $auth_like ? $auth_like->type : -1 : null;
 
         $comments = $user_post->comments;
         return view('post', compact('user_post', 'auth_like_id', 'comments'));
@@ -90,7 +82,7 @@ class UserPostsController extends Controller
 
     public function trending()
     {
-        $user = $this->GetAuthUser();
+        $user = UserHelper::GetAuthUser();
 
         $posts = UserLike::select('user_post_id', DB::raw('count(*) as total'))
             ->groupBy('user_post_id')
@@ -104,7 +96,7 @@ class UserPostsController extends Controller
 
     public function recent()
     {
-        $user = $this->GetAuthUser();
+        $user = UserHelper::GetAuthUser();
 
         $posts = UserPost::orderByDesc('post_date')
             ->withCount('comments')
@@ -117,7 +109,7 @@ class UserPostsController extends Controller
 
     public function random()
     {
-        $user = $this->GetAuthUser();
+        $user = UserHelper::GetAuthUser();
 
         $posts = UserPost::inRandomOrder()->paginate(4);
 
@@ -132,7 +124,7 @@ class UserPostsController extends Controller
 
     public function upload(Request $request)
     {
-        $user = $this->GetAuthUser();
+        $user = UserHelper::GetAuthUser();
 
         $newUserPost = new UserPost;
         $newUserPost->user_id = $user->id;

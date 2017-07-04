@@ -18,7 +18,8 @@ Route::get('posts/{postId}', 'UserPostsController@get');
 
 Route::group(['middleware' => 'notconnected'], function () {
     Route::get('login', function () {
-        return view('login');
+        $error = null;
+        return view('login', compact('error'));
     });
     Route::post('login', 'UsersController@authenticate');
 

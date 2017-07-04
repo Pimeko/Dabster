@@ -16,24 +16,10 @@ use Image;
 use Storage;
 use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
+use App\UserHelper;
 
 class UsersController extends Controller
 {
-    private function getUserByPseudo($pseudo)
-    {
-        return User::where('pseudo', $pseudo)->first();
-    }
-
-    private function GetUserById($userId)
-    {
-        return User::where('id', $userId)->first();
-    }
-
-    private function GetAuthUser()
-    {
-        return $this->GetUserById(Session::get("user_id"));
-    }
-
     public function createUser(Request $request)
     {
         $newUser = new User;
@@ -80,7 +66,7 @@ class UsersController extends Controller
     // Check user's credentials and generates a token
     public function authenticate(Request $request)
     {
-        $user = $this->getUserByPseudo($request->pseudo);
+        $user = UserHelper::getUserByPseudo($request->pseudo);
 
         if (!$this->checkUserCredentials($user, $request))
         {
@@ -118,13 +104,13 @@ class UsersController extends Controller
         $data["followingsCount"] =$user->usersFollowings->count();
         $data["followersCount"] = $user->usersFollowers->count();
         $data["likesCount"] = $user->likes->count();
-        $data["alreadyFollows"] = $this->doesUserFollows($this->GetAuthUser(), $user);
+        $data["alreadyFollows"] = $this->doesUserFollows(UserHelper::GetAuthUser(), $user);
 
         return $data;
     }
 
     public function profilePosts($userId) {
-        $user = $this->GetUserById($userId);
+        $user = UserHelper::GetUserById($userId);
 
         $generalData = $this->getProfileGeneralData($user);
         $page = 'posts';
@@ -140,7 +126,7 @@ class UsersController extends Controller
     }
 
     public function profileLikes($userId) {
-        $user = $this->GetUserById($userId);
+        $user = UserHelper::GetUserById($userId);
 
         $generalData = $this->getProfileGeneralData($user);
         $page = 'likes';
@@ -153,7 +139,7 @@ class UsersController extends Controller
     }
 
     public function profileFollowings($userId) {
-        $user = $this->GetUserById($userId);
+        $user = UserHelper::GetUserById($userId);
 
         $generalData = $this->getProfileGeneralData($user);
         $page = 'followings';
@@ -165,12 +151,12 @@ class UsersController extends Controller
     }
 
     public function profileEdit($userId) {
-        $user = $this->GetUserById($userId);
+        $user = UserHelper::GetUserById($userId);
         return view('profile.edit', compact('user'));
     }
 
     public function updateProfile(Request $request, $userId) {
-        $user = $this->GetAuthUser();
+        $user = UserHelper::GetAuthUser();
         $user->description = $request->description;
 
         if ($request->pp)
@@ -189,7 +175,7 @@ class UsersController extends Controller
 
     public function feed($userId)
     {
-        $user = $this->GetUserById($userId);
+        $user = UserHelper::GetUserById($userId);
         $followings = array();
         $usersFollowings = $user->usersFollowings;
         foreach ($usersFollowings as $following)
