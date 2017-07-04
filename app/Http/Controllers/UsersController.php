@@ -66,17 +66,12 @@ class UsersController extends Controller
         return redirect('/');
     }
 
-    public function checkUserCredentials($user, $request)
-    {
-        return !empty($user) && Hash::check($request->password, $user->password);
-    }
-
     // Check user's credentials and generates a token
     public function authenticate(Request $request)
     {
         $user = UserHelper::getUserByPseudo($request->pseudo);
 
-        if (!$this->checkUserCredentials($user, $request))
+        if (empty($user) || Hash::check($request->password, $user->password))
         {
             $error =  "Mauvais pseudo / mot de passe, veuillez réessayer";
             return view('login', compact("error"));

@@ -37,22 +37,36 @@ class UsersControllerTest extends TestCase
         $response->assertRedirect('/');
     }
 
-    public function test_register_redirects_fails()
+    public function test_authenticate_stores_data_in_session()
     {
         $userCreated = factory(User::class)->create([
-            'pseudo' => 'user'
+            'pseudo' => 'user',
+            'password' => 'abc'
         ]);
 
-        $response = $this->call('POST', 'register',[
+        $response = $this->call('POST', 'login',[
             'pseudo' => 'user',
-            'email' => 'user@mail.com',
             'password' => 'abc']);
-        $response->assertRedirect('register');
+
+        $response->assertSessionHas('user_id', $userCreated->id);
+        $response->assertSessionHas('token');
 
         $userCreated->delete();
+    }
 
+    public function test_authenticate_redirects_to_home()
+    {
         $userCreated = factory(User::class)->create([
-            'pseudo' => 'user'
+            'pseudo' => 'user',
+            'password' => 'abc'
         ]);
+
+        $response = $this->call('POST', 'login',[
+            'pseudo' => 'user',
+            'password' => 'abc']);
+
+        $response->assertRedirect('/');
+
+        $userCreated->delete();
     }
 }
