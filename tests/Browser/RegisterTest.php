@@ -47,7 +47,7 @@ class RegisterTest extends DuskTestCase
         });
     }
 
-    public function test_register_fails_email()
+    public function test_register_fails_email_already_exists()
     {
         $this->browse(function (Browser $browser) {
 
@@ -61,6 +61,66 @@ class RegisterTest extends DuskTestCase
                 ->type('password', 'secret')
                 ->press('S\'inscrire')
                 ->assertPathIs('/register');
+
+            $userCreated->delete();
+        });
+    }
+
+    public function test_register_fails_email_invalid()
+    {
+        $this->browse(function (Browser $browser) {
+
+            $userCreated = factory(User::class)->create([
+                'email' => 'user@mail.com'
+            ]);
+
+            $browser->visit('/register')
+                ->type('email', 'wrongemail')
+                ->type('pseudo', 'user')
+                ->type('password', 'secret')
+                ->press('S\'inscrire')
+                ->assertPathIs('/register')
+                ->assertSee('Erreur : ');
+
+            $userCreated->delete();
+        });
+    }
+
+    public function test_register_fails_username_invalid()
+    {
+        $this->browse(function (Browser $browser) {
+
+            $userCreated = factory(User::class)->create([
+                'email' => 'user@mail.com'
+            ]);
+
+            $browser->visit('/register')
+                ->type('email', 'user@mail.com')
+                ->type('pseudo', 'a')
+                ->type('password', 'secret')
+                ->press('S\'inscrire')
+                ->assertPathIs('/register')
+                ->assertSee('Erreur : ');
+
+            $userCreated->delete();
+        });
+    }
+
+    public function test_register_fails_password_invalid()
+    {
+        $this->browse(function (Browser $browser) {
+
+            $userCreated = factory(User::class)->create([
+                'email' => 'user@mail.com'
+            ]);
+
+            $browser->visit('/register')
+                ->type('email', 'user@mail.com')
+                ->type('pseudo', 'user')
+                ->type('password', 'a')
+                ->press('S\'inscrire')
+                ->assertPathIs('/register')
+                ->assertSee('Erreur : ');
 
             $userCreated->delete();
         });

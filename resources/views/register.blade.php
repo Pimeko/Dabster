@@ -8,7 +8,7 @@
         <h1 class="title">S'inscrire</h1>
 
         @if($error)
-            <div style="color: #D9534F">{{ $error }}</div>
+            <div style="color: #D9534F">Erreur : {{ $error }}</div>
         @endif
 
         <form action="" method="post" style="width:50%;margin:0 auto;">
