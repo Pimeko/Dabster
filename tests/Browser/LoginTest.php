@@ -22,7 +22,27 @@ class LoginTest extends DuskTestCase
                 ->type('pseudo', $userCreated->pseudo)
                 ->type('password', 'secret')
                 ->press('Login')
-                ->assertPathIs('/users/' . $userCreated->id . '/feed');
+                ->assertPathIs('/users/' . $userCreated->id . '/feed')
+                ->visit('/logout');
+
+            $userCreated->delete();
+        });
+    }
+
+    public function test_login_fails()
+    {
+        $this->browse(function (Browser $browser) {
+
+            $userCreated = factory(User::class)->create([
+                'password' => bcrypt('secret')
+            ]);
+
+            $browser->visit('/login')
+                ->type('pseudo', $userCreated->pseudo)
+                ->type('password', 'wrongsecret')
+                ->press('Login')
+                ->assertPathIs('/login')
+                ->visit('/logout');
 
             $userCreated->delete();
         });

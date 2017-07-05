@@ -17,6 +17,7 @@ use Storage;
 use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
 use App\UserHelper;
+use Validator;
 
 class UsersController extends Controller
 {
@@ -56,6 +57,17 @@ class UsersController extends Controller
     // Creates a user and generates a token
     public function register(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'pseudo' => 'required|min:3|max:80',
+            'password' => 'min:3|max:80',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return view('register', compact('error'));
+        }
+
         $newUser = $this->createUser($request);
         if (!$newUser || !$this->createAndStoreTokenFromUser($newUser))
         {

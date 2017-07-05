@@ -11,31 +11,31 @@
             <div style="color: #D9534F">{{ $error }}</div>
         @endif
 
-        
-        {!! Form::open(['style' => 'width:50%;margin:0 auto;']) !!}
+        <form action="" method="post" style="width:50%;margin:0 auto;">
+            {{ csrf_field() }}
             <div class="field">
-                {!! Form::label('pseudo', 'Nom d\'utilisateur:', ['class' => 'label']) !!}
+                <label class="label">Adresse e-mail :</label><br>
                 <p class="control">
-                    {!! Form::text('pseudo', null, ['class' => 'input']) !!}
+                    <input type="text" name="email" placeholder="Adresse e-mail" class="input">
                 </p>
             </div>
             <div class="field">
-                {!! Form::label('email', 'E-mail:', ['class' => 'label']) !!}
+                <label class="label">Pseudo :</label><br>
                 <p class="control">
-                    {!! Form::text('email', null, ['class' => 'input']) !!}
+                    <input type="text" name="pseudo" placeholder="Nom d'utilisateur:" class="input">
                 </p>
             </div>
             <div class="field">
-                {!! Form::label('password', 'Mot de passe:', ['class' => 'label']) !!}
+                <label class="label">Mot de passe :</label><br>
                 <p class="control">
-                    {!! Form::password('password', ['class' => 'input']) !!}
+                    <input type="password" name="password" class="input">
                 </p>
             </div>
             <div class="field">
                 <p class="control">
-                    {!! Form::submit('S\'inscrire', ['class' => 'button is-primary']) !!}
+                    <input type="submit" value="S'inscrire" class="button is-primary">
                 </p>
             </div>
-        {!! Form::close() !!}
+        </form>
     </div>
 @endsection
