@@ -11,26 +11,26 @@
         @endif
 
         <h1 class="title">Connexion</h1>
-        
-        {!! Form::open(['style' => 'width:50%;margin:0 auto;']) !!}
-            <div class="field">
-                {!! Form::label('pseudo', 'Nom d\'utilisateur:', ['class' => 'label']) !!}
-                <p class="control">
-                    {!! Form::text('pseudo', null, ['class' => 'input']) !!}
-                </p>
-            </div>
-            <div class="field">
-                {!! Form::label('password', 'Mot de passe:', ['class' => 'label']) !!}
-                <p class="control">
-                    {!! Form::password('password', ['class' => 'input']) !!}
-                </p>
-            </div>
-            <div class="field">
-                <p class="control">
-                    {!! Form::submit('Login', ['class' => 'button is-primary']) !!}
-                </p>
-            </div>
-        {!! Form::close() !!}
+            <form action="" method="post" style="width:50%;margin:0 auto;">
+                {{ csrf_field() }}
+                <div class="field">
+                    <label class="label">Pseudo :</label><br>
+                    <p class="control">
+                        <input type="text" name="pseudo" placeholder="Nom d'utilisateur:" class="input">
+                    </p>
+                </div>
+                <div class="field">
+                    <label class="label">Mot de passe :</label><br>
+                    <p class="control">
+                        <input type="password" name="password" class="input">
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control">
+                        <input type="submit" value="Login" class="button is-primary">
+                    </p>
+                </div>
+            </form>
     </div>
 </div>
 @endsection

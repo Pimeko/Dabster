@@ -71,7 +71,7 @@ class UsersController extends Controller
     {
         $user = UserHelper::getUserByPseudo($request->pseudo);
 
-        if (empty($user) || Hash::check($request->password, $user->password))
+        if (empty($user) || !Hash::check($request->password, $user->password))
         {
             $error =  "Mauvais pseudo / mot de passe, veuillez réessayer";
             return view('login', compact("error"));
