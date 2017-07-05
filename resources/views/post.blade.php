@@ -62,17 +62,10 @@
                     </footer>
                     <footer class="card-footer">
                         @if (Session::get('user_id') == $user_post->user_id)
-
-                            {!! Form::open([
-                                'url' => '/posts/' . $user_post->id,
-                                'method' => 'delete'
-                            ]) !!}
-
-
-                            {{ Form::button('Supprimer la publication',
-                            ['type' => 'submit', 'class' => 'card-footer-item'] )  }}
-
-                            {!! Form::close() !!}
+                            <form action="{{'/posts/' . $user_post->id}}" method="post" style="width:50%;margin:0 auto;">
+                                {{ csrf_field() }}
+                                <input type="submit" class="card-footer-item" value="Supprimer la publication"/>
+                            </form>
                         @endif
                     </footer>
                 @endif
@@ -80,23 +73,29 @@
         <br/>
 
         <div class="field">
-            {!! Form::open([
-                'url' => '/posts/' . $user_post->id . '/comments',
-                'method' => 'post'
-            ]) !!}
-            {!! Form::label('label', 'COMMENTAIRES', ['class' => 'label']) !!}
+            <form action="{{'/posts/' . $user_post->id . '/comments'}}" method="post" style="width:50%;margin:0 auto;">
+                {{ csrf_field() }}
+                <label class="label">COMMENTAIRES</label>
 
-            @if (Session::has('token'))
-            <p class="control">
-                {!! Form::textarea('data', null, ['class' => 'textarea', 'placeholder' => 'Votre commentaire sur ce dab']) !!}
-            </p>
+                @if($error)
+                    <div style="color: #D9534F">{{ $error }}</div>
+                @endif
 
-            {{ Form::submit('Poster', ['class' => 'button is-primary'] )  }}
-            @else
-                Il faut être connecté pour pouvoir commenter et réagir aux dabs. <a href="/login">Connectez-vous !</a>
-            @endif
-
-            {!! Form::close() !!}
+                @if (Session::has('token'))
+                    <div class="field">
+                        <p class="control">
+                            <textarea class="textarea" name="data" placeholder="Votre commentaire sur ce dab"></textarea>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control">
+                            <input type="submit" value="Poster" class="button is-primary">
+                        </p>
+                    </div>
+                @else
+                    Il faut être connecté pour pouvoir commenter et réagir aux dabs. <a href="/login">Connectez-vous !</a>
+                @endif
+            </form>
         </div>
 
         @foreach ($comments as $comment)
@@ -120,7 +119,6 @@
                             'url' => '/comments/' . $comment->id,
                             'method' => 'delete'
                         ]) !!}
-
 
                         {{ Form::button('Supprimer',
                         ['type' => 'submit', 'class' => 'card-footer-item'] )  }}

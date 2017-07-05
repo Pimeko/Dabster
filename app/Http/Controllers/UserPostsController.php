@@ -34,7 +34,8 @@ class UserPostsController extends Controller
             ->first();
 
         $comments = $user_post->comments;
-        return view('post', compact('user_post', 'auth_like_id', 'comments'));
+        $error = null;
+        return view('post', compact('user_post', 'auth_like_id', 'comments', 'error'));
     }
 
     public function remove($postId)

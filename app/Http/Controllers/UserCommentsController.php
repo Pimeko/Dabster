@@ -8,11 +8,20 @@ use App\UserPost;
 use App\UserComment;
 use JWTAuth;
 use Session;
+use Validator;
 
 class UserCommentsController extends Controller
 {
     public function add(UserPost $post, Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'data' => 'required|min:2|max:500',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/posts/' . $post->id);
+        }
+
         $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
         $newComment = new UserComment;
 
@@ -32,6 +41,7 @@ class UserCommentsController extends Controller
         $postId = $comment->user_post_id;
         if ($comment && $authUser->id == $comment->user_id)
             $comment->delete();
+
         return redirect('/posts/' . $postId);
     }
 }

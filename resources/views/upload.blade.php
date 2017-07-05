@@ -14,7 +14,6 @@
                 <div style="color: #D9534F">{{ $error }}</div>
             @endif
 
-
             <form action="" method="post" style="width:50%;margin:0 auto;" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="field">
