@@ -14,15 +14,15 @@
             <form action="" method="post" style="width:50%;margin:0 auto;">
                 {{ csrf_field() }}
                 <div class="field">
-                    <label class="label">Pseudo :</label><br>
+                    <label class="label">Pseudo :</label>
                     <p class="control">
-                        <input type="text" name="pseudo" placeholder="Nom d'utilisateur:" class="input">
+                        <input type="text" name="pseudo" placeholder="Pseudo" class="input">
                     </p>
                 </div>
                 <div class="field">
-                    <label class="label">Mot de passe :</label><br>
+                    <label class="label">Mot de passe :</label>
                     <p class="control">
-                        <input type="password" name="password" class="input">
+                        <input type="password" name="password" placeholder="Mot de passe" class="input">
                     </p>
                 </div>
                 <div class="field">

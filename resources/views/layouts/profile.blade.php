@@ -21,19 +21,16 @@
           <p>
             <span class="title is-bold">{{ $user->pseudo }}</span>
             @if (Session::get('user_id') !== $user->id)
-              {!! Form::open([
-                  'url' => '/users/' . $user->id . '/followings',
-                  'method' => 'post'
-              ]) !!}
 
+              <form action="{{'/users/' . $user->id . '/followings'}}" method="post" style="width:50%;margin:0 auto;">
+                {{ csrf_field() }}
 
-              @if ($generalData['alreadyFollows'])
-                {{ Form::submit('Unfollow', ['class' => 'button is-primary'] )  }}
-              @else
-                {{ Form::submit('Follow', ['class' => 'button is-primary'] )  }}
-              @endif
-
-              {!! Form::close() !!}
+                @if ($generalData['alreadyFollows'])
+                  <input type="submit" value="Ne plus suivre" class="button is-primary">
+                @else
+                  <input type="submit" value="Suivre" class="button is-primary">
+                @endif
+              </form>
             @endif
           </p>
           <p class="tagline">

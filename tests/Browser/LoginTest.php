@@ -29,7 +29,7 @@ class LoginTest extends DuskTestCase
         });
     }
 
-    public function test_login_fails()
+    public function test_login_fails_on_password()
     {
         $this->browse(function (Browser $browser) {
 
@@ -45,6 +45,19 @@ class LoginTest extends DuskTestCase
                 ->visit('/logout');
 
             $userCreated->delete();
+        });
+    }
+
+    public function test_login_fails_on_pseudo()
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser->visit('/login')
+                ->type('pseudo', 'wronguser')
+                ->type('password', 'secret')
+                ->press('Login')
+                ->assertPathIs('/login')
+                ->visit('/logout');
         });
     }
 }

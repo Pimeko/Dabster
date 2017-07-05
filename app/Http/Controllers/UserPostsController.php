@@ -14,33 +14,10 @@ use App\UserHelper;
 use Tymon\JWTAuthExceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
 use DB;
+use Validator;
 
 class UserPostsController extends Controller
 {
-    public function addPost($userId, Request $request)
-    {
-        $user = UserHelper::GetUserById($userId);
-        $newUserPost = new UserPost;
-
-        $newUserPost->user_id = $user->id;
-
-        // Save image on server
-        $imageName = $request->file('image')->getClientOriginalName();
-        $path = '/img/' . $user->id . '/';
-        $request->file('image')->move(
-            base_path() . $path, $imageName
-        );
-        $fullPath = $path . $imageName;
-
-        $newUserPost->img_path = $fullPath;
-        $newUserPost->post_date = Carbon::now();
-
-        if ($request->has('description'))
-            $newUserPost->description = $request->description;
-
-        $newUserPost->save();
-    }
-
     public function get($postId)
     {
         $auth_like_id = -1;
@@ -118,25 +95,31 @@ class UserPostsController extends Controller
 
     public function uploadPage()
     {
-        return view('upload');
+        $error = null;
+        return view('upload', compact('error'));
     }
 
     public function upload(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|mimes:jpeg,bmp,png,jpg,gif|max:10240',
+            'description' => 'nullable|max:500',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return view('upload', compact('error'));
+        }
+
         $user = UserHelper::GetAuthUser();
 
         $newUserPost = new UserPost;
         $newUserPost->user_id = $user->id;
 
         // Save image on server
-        if ($request->image)
-        {
-            $file = $request->file('image');
-            $file->storeAs($user->id, $file->getClientOriginalName());
-            $fullPath = '/img/' . $user->id . '/' . $file->getClientOriginalName();
-        }
-        else
-            return redirect('upload');
+        $file = $request->file('image');
+        $file->storeAs($user->id, $file->getClientOriginalName());
+        $fullPath = '/img/' . $user->id . '/' . $file->getClientOriginalName();
         $user->save();
 
         $newUserPost->img_path = $fullPath;
