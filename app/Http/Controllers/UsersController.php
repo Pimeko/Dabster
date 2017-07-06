@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\UserComment;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -95,6 +96,36 @@ class UsersController extends Controller
     public function logout() {
         Session::flush();
         return redirect('/');
+    }
+
+    public function signout(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'pseudo' => 'required|min:3|max:80',
+        ]);
+        $auth = UserHelper::GetAuthUser();
+        $error = null;
+        if ($request->pseudo != $auth->pseudo)
+            $error = "Le pseudo n'est pas correct.";
+        if ($validator->fails())
+            $error = $validator->errors()->first();
+
+        if ($error)
+            return view('signout', compact('error'));
+
+        UserLike::where('user_id', $auth->id)->delete();
+        $posts = UserPost::where('user_id', $auth->id)->get();
+        foreach ($posts as $post)
+        {
+            UserComment::where('user_post_id', $post->id)->delete();
+            $post->delete();
+        }
+        UserComment::where('user_id', $auth->id)->delete();
+        //$auth->usersFollowings()->where('follower_id', $authUser->id) TODO detach all
+
+        User::where('id', $auth->id)->delete();
+
+        return $this->logout();
     }
 
     private function getProfileGeneralData($user)

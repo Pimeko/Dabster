@@ -57,4 +57,10 @@ class PagesController extends Controller
         $error = null;
         return view('register', compact('error'));
     }
+
+    public function signout()
+    {
+        $error = null;
+        return view('signout', compact('error'));
+    }
 }

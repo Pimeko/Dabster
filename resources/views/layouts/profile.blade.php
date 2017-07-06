@@ -42,7 +42,12 @@
           </p>
           <p>
             @if (Session::get('user_id') === $user->id)
-              <a href={{ '/users/' . $user->id . '/edit'}} class="button is-primary is-outlined follow">Editer profil</a>
+              <a href={{ '/users/' . $user->id . '/edit'}} class="button is-primary is-outlined follow">
+                Editer profil
+              </a>
+              <a href='/signout' class="button is-primary is-outlined follow">
+                Supprimer profil
+              </a>
             @endif
           </p>
         </div>

@@ -25,7 +25,9 @@ Route::group(['middleware' => 'notconnected'], function () {
 });
 
 Route::group(['middleware' => 'validjwt'], function () {
-    Route::get('logout', 'UsersController@logout');
+    Route::get('logout',                         'UsersController@logout');
+    Route::get('signout',                        'PagesController@signout');
+    Route::post('signout',                       'UsersController@signout');
 
     // users
     Route::get('users/{userId}',                'UsersController@profilePosts');
