@@ -117,9 +117,11 @@ class UsersController extends Controller
         $posts = UserPost::where('user_id', $auth->id)->get();
         foreach ($posts as $post)
         {
+            unlink(public_path() . $post->img_path);
             UserComment::where('user_post_id', $post->id)->delete();
             $post->delete();
         }
+        rmdir(public_path() . '/img/' . $auth->id);
         UserComment::where('user_id', $auth->id)->delete();
         $auth->usersFollowings()->detach();
         $auth->usersFollowers()->detach();

@@ -42,8 +42,10 @@ class UserPostsController extends Controller
     {
         $authUser = JWTAuth::setToken(Session::get("token"))->authenticate();
         $post = UserPost::where('id', $postId)->first();
+
         if ($post && $authUser->id == $post->user_id)
         {
+            unlink(public_path() . $post->img_path);
             $comments = $post->commentsOnly;
             foreach ($comments as $comment)
                 $comment->delete();

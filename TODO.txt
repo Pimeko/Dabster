@@ -1,3 +1,1 @@
-supprimer user depuis profil
-
-resize image dans publication
+Supprimer dossier quand suppresion de user et de post

@@ -24,6 +24,10 @@ Route::group(['middleware' => 'notconnected'], function () {
     Route::post('register', 'UsersController@register');
 });
 
+Route::get('404', function () {
+    return view('404');
+});
+
 Route::group(['middleware' => 'validjwt'], function () {
     Route::get('logout',                         'UsersController@logout');
     Route::get('signout',                        'PagesController@signout');
