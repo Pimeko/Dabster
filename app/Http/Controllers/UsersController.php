@@ -121,7 +121,8 @@ class UsersController extends Controller
             $post->delete();
         }
         UserComment::where('user_id', $auth->id)->delete();
-        //$auth->usersFollowings()->where('follower_id', $authUser->id) TODO detach all
+        $auth->usersFollowings()->detach();
+        $auth->usersFollowers()->detach();
 
         User::where('id', $auth->id)->delete();
 
