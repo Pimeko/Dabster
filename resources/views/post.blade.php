@@ -62,10 +62,17 @@
                     </footer>
                     <footer class="card-footer">
                         @if (Session::get('user_id') == $user_post->user_id)
-                            <form action="{{'/posts/' . $user_post->id}}" method="post" style="width:50%;margin:0 auto;">
-                                {{ csrf_field() }}
-                                <input type="submit" class="card-footer-item" value="Supprimer la publication"/>
-                            </form>
+
+                            {!! Form::open([
+                                'url' => '/posts/' . $user_post->id,
+                                'method' => 'delete'
+                            ]) !!}
+
+
+                            {{ Form::button('Supprimer la publication',
+                            ['type' => 'submit', 'class' => 'card-footer-item'] )  }}
+
+                            {!! Form::close() !!}
                         @endif
                     </footer>
                 @endif

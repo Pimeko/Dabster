@@ -88,7 +88,10 @@ class UserPostsController extends Controller
     {
         $user = UserHelper::GetAuthUser();
 
-        $posts = UserPost::inRandomOrder()->paginate(4);
+        $posts = UserPost::inRandomOrder()
+            ->withCount('comments')
+            ->withCount('likes')
+            ->paginate(4);
 
         $page = "random";
         return view('home', compact('posts', 'page', 'user'));
