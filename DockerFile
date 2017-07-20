@@ -1,8 +1,0 @@
-FROM composer:latest
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app/
-COPY composer.json /usr/src/app
-RUN composer install
-COPY . /usr/src/app
-EXPOSE 8000
-#CMD [ php, artisan, serv]

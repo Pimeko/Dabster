@@ -1,0 +1,18 @@
+webapp:
+  build: ./Webapp
+  restart: always
+  links:
+    - db
+  ports:
+    - "8000:8000"
+
+db:
+  image: mysql:5.7
+  restart: always
+  environment:
+   - MYSQL_DATABASE=dabster
+   - MYSQL_USER=homestead
+   - MYSQL_PASSWORD=homestead
+   - MYSQL_ROOT_PASSWORD=root
+  ports:
+    - "3306:3306"
