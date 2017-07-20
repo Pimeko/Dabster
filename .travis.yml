@@ -28,17 +28,16 @@ install:
   - travis_retry composer install --no-interaction
 
 script:
-  - cd /Webapp/
-  - vendor/bin/phpunit
-  - php artisan dusk
+  - Webapp/vendor/bin/phpunit
+  - cd Webapp && php artisan dusk
 
 services:
   - mysql
 
 cache:
   directories:
-    - node_modules
-    - vendor
+    - Webapp/node_modules
+    - Webapp/vendor
 
 env:
   - TRAVIS_NODE_VERSION="4"
