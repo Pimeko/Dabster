@@ -21,7 +21,6 @@ before_script:
   - php artisan serve &
 
 before_install:
-  - cd /Webapp/
   - mysql -e 'CREATE DATABASE dabster;'
 
 install:
