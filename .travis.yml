@@ -16,6 +16,7 @@ before_install:
 
 script:
   - vendor/bin/phpunit
+  - php artisan dusk
 
 services:
   - mysql
