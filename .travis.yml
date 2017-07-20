@@ -1,4 +1,6 @@
+sudo: required
 language: php
+dist: trusty
 
 php:
   - 7.0
@@ -10,9 +12,18 @@ before_script:
   - composer install --no-interaction
   - php artisan key:generate
   - php artisan migrate
+  # Dusk
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - ./vendor/laravel/dusk/bin/chromedriver-linux &
+  - cp .env.testing .env
+  - php artisan serve &
 
 before_install:
   - mysql -e 'CREATE DATABASE dabster;'
+
+install:
+  - travis_retry composer install --no-interaction
 
 script:
   - vendor/bin/phpunit
