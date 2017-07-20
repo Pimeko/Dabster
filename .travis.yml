@@ -5,8 +5,15 @@ dist: trusty
 php:
   - 7.0
 
+before_install:
+  - cd Webapp/
+  - mysql -e 'CREATE DATABASE dabster;'
+
+install:
+  - travis_retry composer install --no-interaction
+
 before_script:
-  - cd /Webapp/
+  - cd Webapp/
   - phpenv config-rm xdebug.ini
   - cp .env.travis .env
   - composer self-update
@@ -20,15 +27,9 @@ before_script:
   - cp .env.example .env
   - php artisan serve &
 
-before_install:
-  - mysql -e 'CREATE DATABASE dabster;'
-
-install:
-  - travis_retry composer install --no-interaction
-
 script:
-  - Webapp/vendor/bin/phpunit
-  - cd Webapp && php artisan dusk
+  - vendor/bin/phpunit
+  - php artisan dusk
 
 services:
   - mysql
