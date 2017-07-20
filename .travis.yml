@@ -6,6 +6,7 @@ php:
   - 7.0
 
 before_script:
+  - cd /Webapp/
   - phpenv config-rm xdebug.ini
   - cp .env.travis .env
   - composer self-update
