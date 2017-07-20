@@ -21,12 +21,14 @@ before_script:
   - php artisan serve &
 
 before_install:
+  - cd /Webapp/
   - mysql -e 'CREATE DATABASE dabster;'
 
 install:
   - travis_retry composer install --no-interaction
 
 script:
+  - cd /Webapp/
   - vendor/bin/phpunit
   - php artisan dusk
 
