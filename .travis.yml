@@ -6,7 +6,6 @@ php:
   - 7.0
 
 before_install:
-  - cd Webapp/
   - mysql -e 'CREATE DATABASE dabster;'
 
 install:
