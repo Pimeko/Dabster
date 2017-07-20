@@ -121,7 +121,7 @@ class UsersController extends Controller
             UserComment::where('user_post_id', $post->id)->delete();
             $post->delete();
         }
-        rmdir(public_path() . '/img/' . $auth->id);
+        //rmdir(public_path() . '/img/' . $auth->id);
         UserComment::where('user_id', $auth->id)->delete();
         $auth->usersFollowings()->detach();
         $auth->usersFollowers()->detach();
