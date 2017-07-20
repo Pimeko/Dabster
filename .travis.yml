@@ -39,3 +39,8 @@ cache:
 
 env:
   - TRAVIS_NODE_VERSION="4"
+
+notifications:
+  slack: "dabsterteam:9aTVzD0L1r4lMAIYDOjmhbSm"
+    on_success: always
+    on_failure: always
