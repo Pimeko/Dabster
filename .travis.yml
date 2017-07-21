@@ -6,10 +6,12 @@ php:
   - 7.0
 
 before_script:
+  - cd Webapp/
   - phpenv config-rm xdebug.ini
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
+  - mysql -e 'CREATE DATABASE dabster;'
   - php artisan key:generate
   - php artisan migrate
   # Dusk
@@ -18,12 +20,7 @@ before_script:
   - ./vendor/laravel/dusk/bin/chromedriver-linux &
   - cp .env.example .env
   - php artisan serve &
-
-before_install:
-  - mysql -e 'CREATE DATABASE dabster;'
-
-install:
-  - travis_retry composer install --no-interaction
+  
 
 script:
   - vendor/bin/phpunit
@@ -34,8 +31,8 @@ services:
 
 cache:
   directories:
-    - node_modules
-    - vendor
+    - Webapp/node_modules
+    - Webapp/vendor
 
 env:
   - TRAVIS_NODE_VERSION="4"
